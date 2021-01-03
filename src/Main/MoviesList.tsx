@@ -23,25 +23,43 @@ type TState =  {
 	movies: []
 }
 
-class MoviesList extends React.Component<any, TState> {
-  constructor(props: any) {
-    super(props);
+type TProps = {
+	filters: {
+		sort_by: string
+	}
+}
 
-    this.state = {
-      movies: []
-    };
+function getMovies(API_URL: string, API_KEY_3: string, sort_by: string){
+	return 	fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`)
+	.then(res => res.json())
+}
+
+class MoviesList extends React.Component<TProps, TState> {
+  state: TState = {
+    movies: []
   }
 
 	componentDidMount(){
-		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU`)
-			.then(res => res.json())
+		const sort_by = this.props.filters.sort_by;
+
+		getMovies(API_URL, API_KEY_3, sort_by)
 			.then(data => this.setState({movies: data.results}));		
 	}
 
+	componentWillReceiveProps(nextProps: TProps){
+		const sort_by = this.props.filters.sort_by;
+
+		if(nextProps.filters.sort_by !== this.props.filters.sort_by){
+			getMovies(API_URL, API_KEY_3, sort_by)
+				.then(data => this.setState({movies: data.results}));		
+		}
+	}
+
 	render(){
+		const movies = this.state.movies;
 		return (
 			<div className="row">
-				{this.state.movies.map((movie: TMovie) => {
+				{movies.map((movie: TMovie) => {
 					return (
 						<div className="col-6 mb-4" key={movie.id}>
 							<MovieItem item={movie} />
