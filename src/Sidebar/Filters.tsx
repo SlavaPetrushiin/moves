@@ -1,5 +1,6 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import { TStateFilters } from "../App";
+import SortBy from "./SortBy";
 
 type TProps = {
 	filters: TStateFilters
@@ -9,30 +10,14 @@ type TProps = {
 }
 
 class Filters extends React.Component<TProps> {
-	onChangeValue = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		this.props.onChangeFilters(e.currentTarget.name, e.currentTarget.value);
-	}
-
 	render(){
-		const sort_by = this.props.filters.sort_by;
 		const page = this.props.page;
 		const onChangePage = this.props.onChangePage;
 
 		return (
 				<form className="mb-3">
 					<label htmlFor="sort_by">Сортировать по:</label>
-					<select
-						value={sort_by}
-						onChange={this.onChangeValue}
-						className="form-select mb-3"
-						name="sort_by"
-						id="sort_by"
-					>
-						<option value="popularity.desc">Популярные по убыванию</option>
-						<option value="popularity.asc">Популярные по возростанию</option>
-						<option value="vote_average.desc">Рейтинг по убыванию</option>
-						<option value="vote_average.asc">Рейтинг по возростанию</option>
-					</select>
+					<SortBy onChangeSortBy={this.props.onChangeFilters} filters={this.props.filters}/>
 					<div>
 						<div className="btn-group">
 							<button
