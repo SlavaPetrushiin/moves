@@ -1,6 +1,8 @@
 import React from "react";
+import { API_KEY_3, API_URL } from "../api/api";
 import { TStateFilters } from "../App";
 import SortBy from "./SortBy";
+import Genres from "./Genres";
 
 type TProps = {
 	filters: TStateFilters
@@ -9,11 +11,34 @@ type TProps = {
 	onChangePage: (page: number) => void
 }
 
-class Filters extends React.Component<TProps> {
+export type TGenre = {
+	id: string
+	name: string
+}
+
+export type TState =  {
+	genres: TGenre[]
+}
+
+class Filters extends React.Component<TProps, TState> {
+	state: TState = {
+		genres: []
+	}
+
+	componentDidMount(){
+		this.getAllGenres();
+	}
+
+	getAllGenres(){
+		fetch(`${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`)
+			.then(res => res.json())
+			.then(data => this.setState({genres: data.genres}));	
+	}
+
 	render(){
 		const page = this.props.page;
 		const onChangePage = this.props.onChangePage;
-
+		console.log("genres: ", this.state.genres)
 		return (
 				<form className="mb-3">
 					<label htmlFor="sort_by">Сортировать по:</label>
@@ -38,7 +63,7 @@ class Filters extends React.Component<TProps> {
 							<p>Страница: {page}</p>
 						</div>
 					</div>
-	
+					<Genres genres={this.state.genres}/>
 				</form>
 		)
 	}

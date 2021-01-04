@@ -32,7 +32,7 @@ type TProps = {
 
 class MoviesList extends React.Component<TProps, TState> {
   state: TState = {
-    movies: []
+		movies: [],
   }
 
 	getMovies(filters: TStateFilters, page: number): void{
@@ -59,6 +59,7 @@ class MoviesList extends React.Component<TProps, TState> {
 
 	render(){
 		const movies = this.state.movies;
+
 		return (
 			<div className="row">
 				{movies.map((movie: TMovie) => {
