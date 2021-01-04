@@ -1,17 +1,15 @@
 import React from "react";
-import { API_KEY_3, API_URL } from "../api/api";
+import { TStateFilters } from "../App";
 
 type TProps = {
-	filters: {
-		sort_by: string
-	}
-	setFilters: any
+	filters: TStateFilters
+	onChangeFilters: (name: any, value: string) => void
 }
 
 class Filters extends React.Component<TProps> {
 
-	onChangeFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		this.props.setFilters({sort_by: e.currentTarget.value});
+	onChangeValue = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		this.props.onChangeFilters(e.currentTarget.name, e.currentTarget.value);
 	}
 
 	render(){
@@ -21,8 +19,9 @@ class Filters extends React.Component<TProps> {
 					<label htmlFor="sort_by">Сортировать по:</label>
 					<select
 						value={sort_by}
-						onChange={this.onChangeFilter}
+						onChange={this.onChangeValue}
 						className="form-select"
+						name="sort_by"
 						id="sort_by"
 					>
 						<option value="popularity.desc">Популярные по убыванию</option>

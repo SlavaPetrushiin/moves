@@ -1,6 +1,7 @@
 import React from "react";
 import MovieItem from "./MovieItem";
 import {API_URL, API_KEY_3} from "../api/api";
+import { TStateFilters } from "../App";
 
 export type TMovie = {
 	adult: boolean;
@@ -24,14 +25,7 @@ type TState =  {
 }
 
 type TProps = {
-	filters: {
-		sort_by: string
-	}
-}
-
-function getMovies(API_URL: string, API_KEY_3: string, sort_by: string){
-	return 	fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`)
-	.then(res => res.json())
+	filters: TStateFilters
 }
 
 class MoviesList extends React.Component<TProps, TState> {
@@ -39,20 +33,21 @@ class MoviesList extends React.Component<TProps, TState> {
     movies: []
   }
 
-	componentDidMount(){
-		const sort_by = this.props.filters.sort_by;
-
-		getMovies(API_URL, API_KEY_3, sort_by)
-			.then(data => this.setState({movies: data.results}));		
+	getMovies(filters: TStateFilters): void{
+		const sort_by = filters.sort_by;
+	
+		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`)
+			.then(res => res.json())
+			.then(data => this.setState({movies: data.results}));	
 	}
 
-	componentWillReceiveProps(nextProps: TProps){
-		const sort_by = this.props.filters.sort_by;
+	componentDidMount(){
+		this.getMovies(this.props.filters);
+	}
 
-		if(nextProps.filters.sort_by !== this.props.filters.sort_by){
-			getMovies(API_URL, API_KEY_3, sort_by)
-				.then(data => this.setState({movies: data.results}));		
-		}
+	componentDidUpdate(prevProps: TProps){
+		if(this.props.filters.sort_by !== prevProps.filters.sort_by)
+			this.getMovies(this.props.filters);
 	}
 
 	render(){
