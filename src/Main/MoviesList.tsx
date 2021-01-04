@@ -26,6 +26,7 @@ type TState =  {
 
 type TProps = {
 	filters: TStateFilters
+	page: number
 }
 
 class MoviesList extends React.Component<TProps, TState> {
@@ -33,21 +34,21 @@ class MoviesList extends React.Component<TProps, TState> {
     movies: []
   }
 
-	getMovies(filters: TStateFilters): void{
+	getMovies(filters: TStateFilters, page: number): void{
 		const sort_by = filters.sort_by;
 	
-		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`)
+		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}`)
 			.then(res => res.json())
 			.then(data => this.setState({movies: data.results}));	
 	}
 
 	componentDidMount(){
-		this.getMovies(this.props.filters);
+		this.getMovies(this.props.filters, this.props.page);
 	}
 
 	componentDidUpdate(prevProps: TProps){
-		if(this.props.filters.sort_by !== prevProps.filters.sort_by)
-			this.getMovies(this.props.filters);
+		if(this.props.filters.sort_by !== prevProps.filters.sort_by || this.props.page !== prevProps.page)
+			this.getMovies(this.props.filters, this.props.page);
 	}
 
 	render(){
