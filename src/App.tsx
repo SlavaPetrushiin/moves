@@ -17,13 +17,9 @@ function App() {
 		setFilters(newFilters);
 	}
 
-	const onChangePage = (name: string) => {
-		if(name === "prev" && page !== 1){
-			setPage(prev => prev - 1)
-		}
-		if(name === "next"){
-			setPage(prev => prev + 1)
-		}
+	const onChangePage = (page: number) => {
+		if(page === 1) return;
+		setPage(page);
 	}
 
   return (

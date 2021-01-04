@@ -5,7 +5,7 @@ type TProps = {
 	filters: TStateFilters
 	onChangeFilters: (name: any, value: string) => void
 	page: number
-	onChangePage: (name: string) => void
+	onChangePage: (page: number) => void
 }
 
 class Filters extends React.Component<TProps> {
@@ -13,15 +13,10 @@ class Filters extends React.Component<TProps> {
 		this.props.onChangeFilters(e.currentTarget.name, e.currentTarget.value);
 	}
 
-	onChangePage = (e: React.MouseEvent<HTMLElement>) => {
-		const name = e.currentTarget.dataset.name!;
-
-		this.props.onChangePage(name);
-	}
-
 	render(){
 		const sort_by = this.props.filters.sort_by;
 		const page = this.props.page;
+		const onChangePage = this.props.onChangePage
 
 		return (
 				<form className="mb-3">
@@ -40,8 +35,8 @@ class Filters extends React.Component<TProps> {
 					</select>
 					<div>
 						<div className="btn-group">
-							<button onClick={this.onChangePage} type="button" className="btn btn-secondary" data-name="prev">Назад</button>
-							<button onClick={this.onChangePage} type="button" className="btn btn-secondary" data-name="next">Вперед</button>
+							<button onClick={() => this.props.onChangePage(page - 1)} type="button" className="btn btn-secondary" data-name="prev">Назад</button>
+							<button onClick={() => this.props.onChangePage(page + 1)} type="button" className="btn btn-secondary" data-name="next">Вперед</button>
 						</div>
 						<div>
 							<p>Страница: {page}</p>
