@@ -18,7 +18,6 @@ function App() {
 	}
 
 	const onChangePage = (page: number) => {
-		if(page === 1) return;
 		setPage(page);
 	}
 
@@ -35,7 +34,7 @@ function App() {
 				/>
 			</div>
 			<div className="col-8">
-				<MoviesList filters={filters} page={page}/>
+				<MoviesList filters={filters} page={page} onChangePage={onChangePage}/>
 			</div>
 		</div>
 	</div>

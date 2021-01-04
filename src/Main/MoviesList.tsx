@@ -27,6 +27,7 @@ type TState =  {
 type TProps = {
 	filters: TStateFilters
 	page: number
+	onChangePage: (page: number) => void
 }
 
 class MoviesList extends React.Component<TProps, TState> {
@@ -47,7 +48,12 @@ class MoviesList extends React.Component<TProps, TState> {
 	}
 
 	componentDidUpdate(prevProps: TProps){
-		if(this.props.filters.sort_by !== prevProps.filters.sort_by || this.props.page !== prevProps.page)
+		if(this.props.filters.sort_by !== prevProps.filters.sort_by){
+			this.props.onChangePage(1);
+			this.getMovies(this.props.filters, 1);
+		}
+
+		if(this.props.page !== prevProps.page)
 			this.getMovies(this.props.filters, this.props.page);
 	}
 

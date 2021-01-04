@@ -16,7 +16,7 @@ class Filters extends React.Component<TProps> {
 	render(){
 		const sort_by = this.props.filters.sort_by;
 		const page = this.props.page;
-		const onChangePage = this.props.onChangePage
+		const onChangePage = this.props.onChangePage;
 
 		return (
 				<form className="mb-3">
@@ -35,8 +35,19 @@ class Filters extends React.Component<TProps> {
 					</select>
 					<div>
 						<div className="btn-group">
-							<button onClick={() => this.props.onChangePage(page - 1)} type="button" className="btn btn-secondary" data-name="prev">Назад</button>
-							<button onClick={() => this.props.onChangePage(page + 1)} type="button" className="btn btn-secondary" data-name="next">Вперед</button>
+							<button
+								onClick={() => onChangePage(page - 1)}
+								type="button" className="btn btn-secondary"
+								disabled={page === 1}
+							>
+								Назад
+							</button>
+							<button 
+								onClick={() => onChangePage(page + 1)}
+								type="button" className="btn btn-secondary"
+							>
+								Вперед
+							</button>
 						</div>
 						<div>
 							<p>Страница: {page}</p>
