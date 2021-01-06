@@ -1,7 +1,7 @@
 import React from "react";
 import MovieItem from "./MovieItem";
 import {API_URL, API_KEY_3} from "../api/api";
-import { TStateFilters } from "../App";
+import { TStateFilters, TFilters } from "./../App";
 
 export type TMovie = {
 	adult: boolean;
@@ -25,7 +25,7 @@ type TState =  {
 }
 
 type TProps = {
-	filters: TStateFilters
+	state: TStateFilters
 	page: number
 	onChangePage: (page: number) => void
 }
@@ -35,26 +35,32 @@ class MoviesList extends React.Component<TProps, TState> {
 		movies: [],
   }
 
-	getMovies(filters: TStateFilters, page: number): void{
+	getMovies(filters: TFilters, page: number): void{
 		const sort_by = filters.sort_by;
+		const with_genres = filters.with_genres;
 	
-		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}`)
+		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&with_genres=${with_genres.join(",")}`)
 			.then(res => res.json())
 			.then(data => this.setState({movies: data.results}));	
 	}
 
 	componentDidMount(){
-		this.getMovies(this.props.filters, this.props.page);
+		this.getMovies(this.props.state.filters, this.props.page);
 	}
 
 	componentDidUpdate(prevProps: TProps){
-		if(this.props.filters.sort_by !== prevProps.filters.sort_by){
+		if(this.props.state.filters.sort_by !== prevProps.state.filters.sort_by){
 			this.props.onChangePage(1);
-			this.getMovies(this.props.filters, 1);
+			this.getMovies(this.props.state.filters, 1);
 		}
 
 		if(this.props.page !== prevProps.page)
-			this.getMovies(this.props.filters, this.props.page);
+			this.getMovies(this.props.state.filters, this.props.page);
+
+			if(this.props.state.filters.with_genres.length !== prevProps.state.filters.with_genres.length){
+				this.props.onChangePage(1);
+				this.getMovies(this.props.state.filters, 1);
+			}
 	}
 
 	render(){

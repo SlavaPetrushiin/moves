@@ -1,8 +1,8 @@
 import React from "react";
-import { TStateFilters } from "../App";
+import { TFilters } from "../App";
 
 type TProps = {
-	filters: TStateFilters
+	filters: TFilters
 	options: TOption[]
 	onChangeSortBy: (name: any, value: string) => void
 }

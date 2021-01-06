@@ -2,23 +2,64 @@ import React, { useState } from 'react';
 import MoviesList from './Main/MoviesList';
 import Filters from './Sidebar/Filters';
 
-export type TStateFilters =  {
-	sort_by: string
+export type TGenre = {
+	id: string
+	name: string
+}
+
+export type TFilters =  {
+	sort_by: string;
+	with_genres: any;
+	primary_release_year: string;	
+}
+
+export type TStateFilters = {
+	filters: TFilters
 }
 
 function App() {
-	const [filters, setFilters] = useState<TStateFilters>({sort_by: "popularity.desc"});
+	const [state, setState] = useState<TStateFilters>({
+		filters: {
+			sort_by: "popularity.desc",
+			primary_release_year: "2020",
+			with_genres: []
+		}
+	})
 	const [page, setPage] = useState<number>(1);
+	const [totalPage, setTotalPage] = useState<number>(1);
 
-	const onChangeFilters = (name: keyof TStateFilters, value: string) => {
-		const newFilters = {...filters};
+	const onChangeFilters = (name: keyof  TFilters, value: string) => {
+		const newFilters = {...state.filters};
 		newFilters[name] = value;
 
-		setFilters(newFilters);
+		setState({filters: newFilters})
 	}
 
 	const onChangePage = (page: number) => {
 		setPage(page);
+	}
+
+	const onChangeCheckedGenres = (id: number, checked: boolean) => {
+		if(checked){
+			setState((prev: TStateFilters) => ({
+				...prev,
+				filters: {
+					...prev.filters,
+					with_genres: [...prev.filters.with_genres, id]
+				}
+			}))
+		}
+
+		if(!checked){
+			setState((prev: TStateFilters) => ({
+				...prev,
+				filters: {
+					...prev.filters,
+					with_genres: prev.filters.with_genres.filter((genre: number )=> genre !== id)
+				}
+			}))
+		}
+
 	}
 
   return (
@@ -27,14 +68,19 @@ function App() {
 			<div className="col-4">
 				<h4>Фильмы</h4>
 				<Filters 
-					filters={filters}
+					state={state}
 					onChangeFilters={onChangeFilters}
 					page={page}
 					onChangePage={onChangePage}
+					onChangeCheckedGenres={onChangeCheckedGenres}
 				/>
 			</div>
 			<div className="col-8">
-				<MoviesList filters={filters} page={page} onChangePage={onChangePage}/>
+				<MoviesList 
+					state={state}
+					page={page}
+					onChangePage={onChangePage}
+				/>
 			</div>
 		</div>
 	</div>

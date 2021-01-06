@@ -1,48 +1,27 @@
 import React from "react";
-import { API_KEY_3, API_URL } from "../api/api";
-import { TStateFilters } from "../App";
+import { TGenre, TStateFilters } from "../App";
 import SortBy from "./SortBy";
 import Genres from "./Genres";
 
 type TProps = {
-	filters: TStateFilters
-	onChangeFilters: (name: any, value: string) => void
+	state: TStateFilters
 	page: number
 	onChangePage: (page: number) => void
+	onChangeFilters: (name: any, value: string) => void
+	onChangeCheckedGenres: (id: number, checked: boolean) => void
 }
 
-export type TGenre = {
-	id: string
-	name: string
-}
-
-export type TState =  {
-	genres: TGenre[]
-}
-
-class Filters extends React.Component<TProps, TState> {
-	state: TState = {
-		genres: []
-	}
-
-	componentDidMount(){
-		this.getAllGenres();
-	}
-
-	getAllGenres(){
-		fetch(`${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`)
-			.then(res => res.json())
-			.then(data => this.setState({genres: data.genres}));	
-	}
-
+class Filters extends React.Component<TProps> {
 	render(){
 		const page = this.props.page;
+		const genres = this.props.state.filters.with_genres;
 		const onChangePage = this.props.onChangePage;
-		console.log("genres: ", this.state.genres)
+		const onChangeCheckedGenres = this.props.onChangeCheckedGenres;
+
 		return (
 				<form className="mb-3">
 					<label htmlFor="sort_by">Сортировать по:</label>
-					<SortBy onChangeSortBy={this.props.onChangeFilters} filters={this.props.filters}/>
+					<SortBy onChangeSortBy={this.props.onChangeFilters} filters={this.props.state.filters}/>
 					<div>
 						<div className="btn-group">
 							<button
@@ -63,7 +42,7 @@ class Filters extends React.Component<TProps, TState> {
 							<p>Страница: {page}</p>
 						</div>
 					</div>
-					<Genres genres={this.state.genres}/>
+					<Genres checkedGenres={onChangeCheckedGenres}/>
 				</form>
 		)
 	}
