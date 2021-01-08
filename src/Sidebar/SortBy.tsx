@@ -42,7 +42,6 @@ class SortBy extends React.Component<TProps> {
 	render(){
 		const sort_by = this.props.filters.sort_by;
 		const options = this.props.options;
-
 		return (
 			<UISelect
 				value={sort_by}

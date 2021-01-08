@@ -5,7 +5,7 @@ import UISelect from "./UISelect";
 type TProps = {
 	filters: TFilters
 	options: TOption[]
-	onChangeSortBy: (name: any, value: string) => void
+	onChangeSortBy: (name: string, value: string) => void
 }
 
 type TOption = {
@@ -46,7 +46,7 @@ class PrimaryReleaseYear extends React.Component<TProps> {
 	render(){
 		const primary_release_year = this.props.filters.primary_release_year;
 		const options = this.props.options;
-
+		console.log("primary_release_year")
 		return (
 			<UISelect 
 				value={primary_release_year}
