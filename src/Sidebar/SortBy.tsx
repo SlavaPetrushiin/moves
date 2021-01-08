@@ -1,5 +1,6 @@
 import React from "react";
 import { TFilters } from "../App";
+import UISelect from "./UISelect";
 
 type TProps = {
 	filters: TFilters
@@ -43,15 +44,15 @@ class SortBy extends React.Component<TProps> {
 		const options = this.props.options;
 
 		return (
-					<select
-						value={sort_by}
-						onChange={this.onChangeValue}
-						className="form-select mb-3"
-						name="sort_by"
-						id="sort_by"
-					>
-						{options.map((option: TOption) => <option key={option.value} value={option.value}>{option.label}</option>)}
-					</select>
+			<UISelect
+				value={sort_by}
+				name={"sort_by"}
+				id={"sort_by"}
+				labelText={"Сортировать по:"}
+				onChangeValue={this.onChangeValue}	
+			>
+				{options.map((option: TOption) => <option key={option.value} value={option.value}>{option.label}</option>)}
+			</UISelect>
 		)
 	}
 }

@@ -23,7 +23,6 @@ class Filters extends React.Component<TProps> {
 
 		return (
 				<form className="mb-3">
-					<label htmlFor="sort_by">Сортировать по:</label>
 					<SortBy onChangeSortBy={this.props.onChangeFilters} filters={this.props.state.filters}/>
 					<PrimaryReleaseYear onChangeSortBy={this.props.onChangeFilters} filters={this.props.state.filters}/>
 					<div>

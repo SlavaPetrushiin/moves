@@ -1,5 +1,6 @@
 import React from "react";
 import { TFilters } from "../App";
+import UISelect from "./UISelect";
 
 type TProps = {
 	filters: TFilters
@@ -47,15 +48,15 @@ class PrimaryReleaseYear extends React.Component<TProps> {
 		const options = this.props.options;
 
 		return (
-					<select
-						value={primary_release_year}
-						onChange={this.onChangeValue}
-						className="form-select mb-3"
-						name="primary_release_year"
-						id="primary_release_year"
-					>
-						{options.map((option: TOption) => <option key={`primary_release_year_${option.value}`} value={option.value}>{option.label}</option>)}
-					</select>
+			<UISelect 
+				value={primary_release_year}
+				name={"primary_release_year"}
+				id={"primary_release_year"}
+				labelText={"Дата релиза"}
+				onChangeValue={this.onChangeValue}			
+			>
+				{options.map((option: TOption) => <option key={`primary_release_year_${option.value}`} value={option.value}>{option.label}</option>)}
+			</UISelect >
 		)
 	}
 }
