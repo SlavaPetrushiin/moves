@@ -6,6 +6,7 @@ import Genres from "./Genres";
 type TProps = {
 	state: TStateFilters
 	page: number
+	totalPage: number
 	onChangePage: (page: number) => void
 	onChangeFilters: (name: any, value: string) => void
 	onChangeCheckedGenres: (id: number, checked: boolean) => void
@@ -14,6 +15,7 @@ type TProps = {
 class Filters extends React.Component<TProps> {
 	render(){
 		const page = this.props.page;
+		const totalPage = this.props.totalPage;
 		const genres = this.props.state.filters.with_genres;
 		const onChangePage = this.props.onChangePage;
 		const onChangeCheckedGenres = this.props.onChangeCheckedGenres;
@@ -34,12 +36,13 @@ class Filters extends React.Component<TProps> {
 							<button 
 								onClick={() => onChangePage(page + 1)}
 								type="button" className="btn btn-secondary"
+								disabled={page === totalPage}
 							>
 								Вперед
 							</button>
 						</div>
 						<div>
-							<p>Страница: {page}</p>
+							<p>Страница: {page} из {totalPage}</p>
 						</div>
 					</div>
 					<Genres checkedGenres={onChangeCheckedGenres}/>

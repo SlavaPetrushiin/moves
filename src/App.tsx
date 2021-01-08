@@ -71,6 +71,7 @@ function App() {
 					state={state}
 					onChangeFilters={onChangeFilters}
 					page={page}
+					totalPage={totalPage}
 					onChangePage={onChangePage}
 					onChangeCheckedGenres={onChangeCheckedGenres}
 				/>
@@ -80,6 +81,7 @@ function App() {
 					state={state}
 					page={page}
 					onChangePage={onChangePage}
+					setTotalPage={setTotalPage}
 				/>
 			</div>
 		</div>

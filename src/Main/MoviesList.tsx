@@ -28,6 +28,7 @@ type TProps = {
 	state: TStateFilters
 	page: number
 	onChangePage: (page: number) => void
+	setTotalPage: (totalPage: number) => void
 }
 
 class MoviesList extends React.Component<TProps, TState> {
@@ -41,7 +42,10 @@ class MoviesList extends React.Component<TProps, TState> {
 	
 		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&with_genres=${with_genres.join(",")}`)
 			.then(res => res.json())
-			.then(data => this.setState({movies: data.results}));	
+			.then(data => {
+				this.setState({movies: data.results});
+				this.props.setTotalPage(data.total_pages);
+			});	
 	}
 
 	componentDidMount(){
@@ -57,10 +61,10 @@ class MoviesList extends React.Component<TProps, TState> {
 		if(this.props.page !== prevProps.page)
 			this.getMovies(this.props.state.filters, this.props.page);
 
-			if(this.props.state.filters.with_genres.length !== prevProps.state.filters.with_genres.length){
-				this.props.onChangePage(1);
-				this.getMovies(this.props.state.filters, 1);
-			}
+		if(this.props.state.filters.with_genres.length !== prevProps.state.filters.with_genres.length){
+			this.props.onChangePage(1);
+			this.getMovies(this.props.state.filters, 1);
+		}
 	}
 
 	render(){
