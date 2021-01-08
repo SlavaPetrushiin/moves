@@ -39,8 +39,9 @@ class MoviesList extends React.Component<TProps, TState> {
 	getMovies(filters: TFilters, page: number): void{
 		const sort_by = filters.sort_by;
 		const with_genres = filters.with_genres;
+		const primary_release_year = filters.primary_release_year;
 	
-		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&with_genres=${with_genres.join(",")}`)
+		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}&with_genres=${with_genres.join(",")}`)
 			.then(res => res.json())
 			.then(data => {
 				this.setState({movies: data.results});
@@ -62,6 +63,11 @@ class MoviesList extends React.Component<TProps, TState> {
 			this.getMovies(this.props.state.filters, this.props.page);
 
 		if(this.props.state.filters.with_genres.length !== prevProps.state.filters.with_genres.length){
+			this.props.onChangePage(1);
+			this.getMovies(this.props.state.filters, 1);
+		}
+
+		if(this.props.state.filters.primary_release_year !== prevProps.state.filters.primary_release_year){
 			this.props.onChangePage(1);
 			this.getMovies(this.props.state.filters, 1);
 		}

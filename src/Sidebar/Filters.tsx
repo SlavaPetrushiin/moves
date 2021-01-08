@@ -2,6 +2,7 @@ import React from "react";
 import { TGenre, TStateFilters } from "../App";
 import SortBy from "./SortBy";
 import Genres from "./Genres";
+import PrimaryReleaseYear from "./PrimaryReleaseYear";
 
 type TProps = {
 	state: TStateFilters
@@ -24,6 +25,7 @@ class Filters extends React.Component<TProps> {
 				<form className="mb-3">
 					<label htmlFor="sort_by">Сортировать по:</label>
 					<SortBy onChangeSortBy={this.props.onChangeFilters} filters={this.props.state.filters}/>
+					<PrimaryReleaseYear onChangeSortBy={this.props.onChangeFilters} filters={this.props.state.filters}/>
 					<div>
 						<div className="btn-group">
 							<button
