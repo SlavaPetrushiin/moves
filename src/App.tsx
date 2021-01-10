@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Header from './Header/Header';
 import MoviesList from './Main/MoviesList';
 import Filters from './Sidebar/Filters';
 
@@ -63,7 +64,8 @@ function App() {
 	}
 
   return (
-	<div className="container pt-5">
+	<div className="container">
+		<Header />
 		<div className="row">
 			<div className="col-4">
 				<h4>Фильмы</h4>
