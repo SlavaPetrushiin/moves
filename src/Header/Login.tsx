@@ -1,5 +1,6 @@
 import React from 'react';
 import { API_KEY_3, API_URL } from '../api/api';
+import { Modal, ModalBody } from 'reactstrap';
 
 const apiAuthentication = (url: string = "", option = {}) => {
 	return new Promise((resolve, reject) => {
@@ -20,7 +21,15 @@ const apiAuthentication = (url: string = "", option = {}) => {
 	})
 }
 
+type TStateLogin = {
+	showModal: boolean
+}
+
 class Login extends React.Component {
+	state: TStateLogin = {
+		showModal: false
+	}
+
 	sendPromises = () => {
 		apiAuthentication(`${API_URL}/authentication/token/new?api_key=${API_KEY_3}`)
 			.then((data: any) => {
@@ -55,19 +64,35 @@ class Login extends React.Component {
       })
       .catch(error => {
         console.log("error", error);
-      });
+			});
+	}
+
+	toggleModal = () => {
+		this.setState((prevState: TStateLogin) => ({
+			showModal: !prevState.showModal
+		}))
 	}
 
 	render(){
+		const showModal = this.state.showModal;
+
 		return (
       <div>
         <button
           className="btn btn-success"
 					type="button"
-					onClick={this.sendPromises}
+					//onClick={this.sendPromises}
+					onClick={this.toggleModal}
         >
           Login
         </button>
+
+					<Modal isOpen={showModal} toggle={this.toggleModal}>
+						<ModalBody>
+							Modal
+						</ModalBody>
+					</Modal>
+
       </div>
 		);		
 	}
