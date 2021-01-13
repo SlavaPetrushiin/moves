@@ -1,6 +1,7 @@
 import React from 'react';
 import { API_KEY_3, API_URL } from '../api/api';
 import { Modal, ModalBody } from 'reactstrap';
+import LoginForm from './LoginForm';
 
 const apiAuthentication = (url: string = "", option = {}) => {
 	return new Promise((resolve, reject) => {
@@ -89,7 +90,7 @@ class Login extends React.Component {
 
 					<Modal isOpen={showModal} toggle={this.toggleModal}>
 						<ModalBody>
-							Modal
+							<LoginForm />
 						</ModalBody>
 					</Modal>
 
