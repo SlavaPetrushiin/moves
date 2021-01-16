@@ -9,3 +9,7 @@
 	color: white;
 	cursor: pointer;
 }
+
+.invalid-feedback{
+	display: block;
+}
