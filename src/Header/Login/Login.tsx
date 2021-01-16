@@ -1,7 +1,8 @@
 import React from 'react';
-import { API_KEY_3, API_URL } from '../api/api';
+import { API_KEY_3, API_URL } from '../../api/api';
 import { Modal, ModalBody } from 'reactstrap';
 import LoginForm from './LoginForm';
+import { TUser } from '../../App';
 
 const apiAuthentication = (url: string = "", option = {}) => {
 	return new Promise((resolve, reject) => {
@@ -26,7 +27,12 @@ type TStateLogin = {
 	showModal: boolean
 }
 
-class Login extends React.Component {
+type TLoginProps = {
+	updateSessionID: (session_id: string) => void
+	updateUser: (user: TUser) => void
+}
+
+class Login extends React.Component<TLoginProps> {
 	state: TStateLogin = {
 		showModal: false
 	}
@@ -90,7 +96,7 @@ class Login extends React.Component {
 
 					<Modal isOpen={showModal} toggle={this.toggleModal}>
 						<ModalBody>
-							<LoginForm />
+							<LoginForm updateSessionID={this.props.updateSessionID} updateUser={this.props.updateUser}/>
 						</ModalBody>
 					</Modal>
 

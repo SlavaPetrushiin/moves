@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header/Header';
 import MoviesList from './Main/MoviesList';
 import Filters from './Sidebar/Filters';
+import Cookies from 'universal-cookie';
+import { apiAuthentication, API_KEY_3, API_URL } from './api/api';
+
+const THIRTY_DAYS_IN_SECONDS = 2592000;
+const cookies = new Cookies();
 
 export type TGenre = {
 	id: string
@@ -18,16 +23,40 @@ export type TStateFilters = {
 	filters: TFilters
 }
 
+export type TUser = {
+	avatar: any
+	id: number
+	include_adult: boolean
+	iso_639_1: string
+	iso_3166_1: string
+	name: string
+	username: string
+}
+
 function App() {
 	const [state, setState] = useState<TStateFilters>({
 		filters: {
 			sort_by: "popularity.desc",
 			primary_release_year: "2020",
 			with_genres: []
-		}
+		},
 	})
 	const [page, setPage] = useState<number>(1);
 	const [totalPage, setTotalPage] = useState<number>(1);
+	const [session_id, setSessionID] = useState<null | string>(null);
+	const [user, setUser] = useState<null | TUser>(null);
+
+	useEffect(() => {
+		(async () => {
+			const session_id = cookies.get("session_id");
+
+			if(session_id){
+				const dataUser: any = await apiAuthentication(`${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`);
+				updateUser(dataUser);
+			}
+		})()
+
+	}, []);
 
 	const onChangeFilters = (name: keyof  TFilters, value: string) => {
 		const newFilters = {...state.filters};
@@ -63,9 +92,22 @@ function App() {
 
 	}
 
+	const updateSessionID = (session_id: string) => {
+		cookies.set('session_id', session_id, { path: '/', maxAge: THIRTY_DAYS_IN_SECONDS });
+		setSessionID(session_id);
+	}
+
+	const updateUser = (user: TUser) => {
+		setUser(user);
+	}
+
   return (
 	<div className="container">
-		<Header />
+		<Header 
+			updateSessionID={updateSessionID}
+			updateUser={updateUser}
+			user={user}
+		/>
 		<div className="row">
 			<div className="col-4">
 				<h4>Фильмы</h4>

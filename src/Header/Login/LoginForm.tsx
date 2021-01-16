@@ -1,5 +1,6 @@
 import React from 'react';
-import { API_KEY_3, API_URL } from '../api/api';
+import { API_KEY_3, API_URL, apiAuthentication } from '../../api/api';
+import { TUser } from '../../App';
 
 interface IErrors {
 	password?: string
@@ -20,26 +21,12 @@ interface IState {
 	submitting: boolean
 }
 
-const apiAuthentication = (url: string = "", option = {}) => {
-	return new Promise((resolve, reject) => {
-			fetch(url, option)
-				.then(response => {
-					if(response.status < 400){
-						return response.json();
-					} else {
-						throw response;
-					}
-				})
-				.then(data => resolve(data))
-				.catch(response  => {
-					response.json().then((error: string) => {
-						reject(error);
-					});
-				})
-	})
+type TLoginFormProps = {
+	updateSessionID: (session_id: string) => void
+	updateUser: (user: TUser) => void
 }
 
-class LoginForm extends React.Component<any, IState> {
+class LoginForm extends React.Component<TLoginFormProps, IState> {
 	state: IState = {
 		password: "",
 		username: "",
@@ -55,6 +42,7 @@ class LoginForm extends React.Component<any, IState> {
 
 		try{
 			const data: any = await apiAuthentication(`${API_URL}/authentication/token/new?api_key=${API_KEY_3}`);
+
 			const token: any = await apiAuthentication(`${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`, {
 				method: "POST",
 				mode: "cors",
@@ -62,32 +50,37 @@ class LoginForm extends React.Component<any, IState> {
 					'Content-Type': 'application/json;charset=utf-8'
 				},
 				body: JSON.stringify({
-					"username": this.state.username,
-					"password": this.state.password,
-					"request_token": data.request_token
+					username: this.state.username,
+					password: this.state.password,
+					request_token: data.request_token
 				})
 			})
-			const session = apiAuthentication(`${API_URL}/authentication/session/new?api_key=${API_KEY_3}`, {
+			const session: any = await apiAuthentication(`${API_URL}/authentication/session/new?api_key=${API_KEY_3}`, {
 				method: "POST",
 				mode: "cors",
 				headers: {
 					'Content-Type': 'application/json;charset=utf-8'
 				},
 				body: JSON.stringify({
-					"success": token.success,
-					"request_token": token.request_token
+					success: token.success,
+					request_token: token.request_token
 				})
 			})
-			console.warn("session: ", session)
+			this.props.updateSessionID(session.session_id);
+			const dataUser: any = await apiAuthentication(`${API_URL}/account?api_key=${API_KEY_3}&session_id=${session.session_id}`)
+			
+			this.setState({
+				submitting: false
+			}, () => {
+				this.props.updateUser(dataUser);
+			})
 		}
 		catch(error){
 			this.setState(prev => ({
 				...prev,
-				baseError: error.status_message
+				baseError: error.status_message,
+				submitting: false
 			}));
-		}
-		finally{
-			this.setState({submitting: false});
 		}
 	}
 
