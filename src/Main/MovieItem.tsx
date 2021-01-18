@@ -1,5 +1,5 @@
 import React from "react";
-import { TMovie } from "./MoviesList";
+import { TMovie } from "./MoviesContainer";
 
 interface IProps {
 	item: TMovie

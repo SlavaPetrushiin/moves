@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header/Header';
-import MoviesList from './Main/MoviesList';
+import MoviesContainer  from './Main/MoviesContainer';
 import Filters from './Sidebar/Filters';
 import Cookies from 'universal-cookie';
 import { apiAuthentication, API_KEY_3, API_URL } from './api/api';
@@ -9,7 +9,7 @@ const THIRTY_DAYS_IN_SECONDS = 2592000;
 const cookies = new Cookies();
 
 export type TGenre = {
-	id: string
+	id: number
 	name: string
 }
 
@@ -121,7 +121,7 @@ function App() {
 				/>
 			</div>
 			<div className="col-8">
-				<MoviesList 
+				<MoviesContainer 
 					state={state}
 					page={page}
 					onChangePage={onChangePage}

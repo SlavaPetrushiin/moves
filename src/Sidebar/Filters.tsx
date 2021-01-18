@@ -1,7 +1,7 @@
 import React from "react";
 import { TGenre, TStateFilters } from "../App";
 import SortBy from "./SortBy";
-import Genres from "./Genres";
+import GenresContainer from "./GenresContainer";
 import PrimaryReleaseYear from "./PrimaryReleaseYear";
 import Pagination from "./Pagination";
 
@@ -29,7 +29,7 @@ class Filters extends React.PureComponent<TProps> {
 						totalPage={totalPage}
 						onChangePage={this.props.onChangePage}
 					/>
-					<Genres checkedGenres={onChangeCheckedGenres}/>
+					<GenresContainer checkedGenres={onChangeCheckedGenres}/>
 				</form>
 		)
 	}

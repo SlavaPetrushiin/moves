@@ -1,43 +1,18 @@
 import React from "react";
-import { API_KEY_3, API_URL } from "../api/api";
+import { TGenre } from "../App";
 
 type TProps = {
+	genres: TGenre[]
 	checkedGenres: (id: number, checked: boolean) => void
 }
 
-type TGenre = {
-	id: number
-	name: string
-}
-
-type TState = {
-	genresList: TGenre[]
-}
-
-class Genres extends React.Component<TProps, TState> {
-	state: TState = {
-		genresList: []
-	}
-
-	componentDidMount(){
-		this.getAllGenres();
-	}
-
-	getAllGenres(){
-		fetch(`${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`)
-			.then(res => res.json())
-			.then(data => this.setState({genresList: data.genres}));	
-	}
-
+class Genres extends React.Component<TProps> {
 	render(){
-		const genres = this.state.genresList;
-		const checkedGenres = this.props.checkedGenres;
-
-		if(genres.length === 0) return null;
+		const {genres, checkedGenres} = this.props;
 
 		return (
 			<div className="form-check">
-				{genres.map(genre => {
+				{genres.map((genre: TGenre) => {
 					return (
 						<div key={genre.id}>
 							<input 
@@ -45,7 +20,7 @@ class Genres extends React.Component<TProps, TState> {
 								type="checkbox"
 								value={genre.id}
 								id={`genre${genre.id}`}
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkedGenres(genre.id, e.currentTarget.checked)}
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkedGenres(+genre.id, e.currentTarget.checked)}
 							/> 
 							<label className="form-check-label" htmlFor={`genre${genre.id}`}>
 								{genre.name}
