@@ -7,6 +7,13 @@ import { apiAuthentication, API_KEY_3, API_URL } from './api/api';
 
 const THIRTY_DAYS_IN_SECONDS = 2592000;
 const cookies = new Cookies();
+export const AppContext = React.createContext<Partial<ContextProps>>({});
+
+export type ContextProps = { 
+	user: null | TUser;
+	state: TStateFilters;
+	updateUser: (user: TUser) => void;
+};
 
 export type TGenre = {
 	id: number
@@ -102,34 +109,40 @@ function App() {
 	}
 
   return (
-	<div className="container">
-		<Header 
-			updateSessionID={updateSessionID}
-			updateUser={updateUser}
-			user={user}
-		/>
-		<div className="row">
-			<div className="col-4">
-				<h4>Фильмы</h4>
-				<Filters 
-					state={state}
-					onChangeFilters={onChangeFilters}
-					page={page}
-					totalPage={totalPage}
-					onChangePage={onChangePage}
-					onChangeCheckedGenres={onChangeCheckedGenres}
+		<AppContext.Provider value={{
+			user,
+			state,
+			updateUser
+		}}>
+			<div className="container">
+				<Header 
+					updateSessionID={updateSessionID}
+					updateUser={updateUser}
+					user={user}
 				/>
+				<div className="row">
+					<div className="col-4">
+						<h4>Фильмы</h4>
+						<Filters 
+							state={state}
+							onChangeFilters={onChangeFilters}
+							page={page}
+							totalPage={totalPage}
+							onChangePage={onChangePage}
+							onChangeCheckedGenres={onChangeCheckedGenres}
+						/>
+					</div>
+					<div className="col-8">
+						<MoviesContainer 
+							state={state}
+							page={page}
+							onChangePage={onChangePage}
+							setTotalPage={setTotalPage}
+						/>
+					</div>
+				</div>
 			</div>
-			<div className="col-8">
-				<MoviesContainer 
-					state={state}
-					page={page}
-					onChangePage={onChangePage}
-					setTotalPage={setTotalPage}
-				/>
-			</div>
-		</div>
-	</div>
+	</AppContext.Provider>
   );
 }
 

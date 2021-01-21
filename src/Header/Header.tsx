@@ -21,7 +21,7 @@ class Header extends React.Component<THeaderProps> {
 							</li>
 						</ul>
 					</nav>
-					{this.props.user ? <User user={this.props.user}/> : <Login updateSessionID={this.props.updateSessionID} updateUser={this.props.updateUser}/>}
+					{this.props.user ? <User/> : <Login updateSessionID={this.props.updateSessionID} updateUser={this.props.updateUser}/>}
 					
 				</div>
 			</header>

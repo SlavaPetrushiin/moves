@@ -1,8 +1,8 @@
 import React from 'react';
-import { TUser } from '../App';
+import { TUser, AppContext } from '../App';
 
 type THeaderProps = {
-	user: null | TUser
+	user: null |TUser
 }
 
 class User extends React.Component<THeaderProps> {
@@ -16,4 +16,13 @@ class User extends React.Component<THeaderProps> {
 	}
 }
 
-export default User;
+export default (props: any) => {
+	return (
+		<AppContext.Consumer>
+			{context => (
+				<User user={context.user!} {...props}/>
+			)}
+		</AppContext.Consumer>
+	)
+}
+
