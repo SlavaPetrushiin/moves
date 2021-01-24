@@ -1,7 +1,6 @@
 import React from "react";
 import {API_URL, API_KEY_3} from "../api/api";
 import { TStateFilters, TFilters } from "../App";
-import MoviesList from "./MoviesList";
 
 export type TMovie = {
 	adult: boolean;
@@ -31,7 +30,7 @@ type TProps = {
 	setTotalPage: (totalPage: number) => void
 }
 
-class MoviesListContainer extends React.Component<TProps, TState> {
+export default (Component: any) => class MoviesHOC extends React.Component<TProps, TState> {
   state: TState = {
 		movies: [],
   }
@@ -78,10 +77,8 @@ class MoviesListContainer extends React.Component<TProps, TState> {
 
 		return (
 			<div className="row">
-				<MoviesList movies={movies}/>
+				<Component movies={movies} {...this.props}/>
 			</div>
 		)
 	}
 }
-
-export default MoviesListContainer;

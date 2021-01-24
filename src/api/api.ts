@@ -24,3 +24,29 @@ export const apiAuthentication = (url: string = "", option = {}) => {
 					})
 		})
 }
+
+export class CallApi {
+	static get(url: string, params = {}){
+		let option = {
+			api_key: API_KEY_3,
+			...params
+		}
+		debugger
+		return apiAuthentication(`${API_URL}/${url}?${Object.entries(option).map(([k,v])=>`${k}=${v}`).join('&')}`,{
+			mode: "cors",
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},			
+		})}
+
+	static post(url: string, params = {}){
+		return apiAuthentication(`${API_URL}/${url}?api_key=${API_KEY_3}`, {
+			method: "POST",
+			mode: "cors",
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},
+			body: JSON.stringify(params)				
+		})
+	}
+}

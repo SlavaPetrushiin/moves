@@ -1,5 +1,6 @@
 import React from 'react';
 import { TUser, AppContext } from '../App';
+import AppContextHOC from '../HOC/AppContextHOC';
 
 type THeaderProps = {
 	user: null |TUser
@@ -16,13 +17,5 @@ class User extends React.Component<THeaderProps> {
 	}
 }
 
-export default (props: any) => {
-	return (
-		<AppContext.Consumer>
-			{context => (
-				<User user={context.user!} {...props}/>
-			)}
-		</AppContext.Consumer>
-	)
-}
+export default AppContextHOC(User)
 

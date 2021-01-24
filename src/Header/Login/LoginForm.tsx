@@ -1,5 +1,5 @@
 import React from 'react';
-import { API_KEY_3, API_URL, apiAuthentication } from '../../api/api';
+import { API_KEY_3, API_URL, apiAuthentication, CallApi } from '../../api/api';
 import { TUser } from '../../App';
 
 interface IErrors {
@@ -41,33 +41,24 @@ class LoginForm extends React.Component<TLoginFormProps, IState> {
 		this.setState({submitting: true});
 
 		try{
-			const data: any = await apiAuthentication(`${API_URL}/authentication/token/new?api_key=${API_KEY_3}`);
+			const data: any = await CallApi.get('authentication/token/new');
 
-			const token: any = await apiAuthentication(`${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`, {
-				method: "POST",
-				mode: "cors",
-				headers: {
-					'Content-Type': 'application/json;charset=utf-8'
-				},
-				body: JSON.stringify({
-					username: this.state.username,
-					password: this.state.password,
-					request_token: data.request_token
-				})
+			const token: any = await CallApi.post('authentication/token/validate_with_login', {
+				username: this.state.username,
+				password: this.state.password,
+				request_token: data.request_token
 			})
-			const session: any = await apiAuthentication(`${API_URL}/authentication/session/new?api_key=${API_KEY_3}`, {
-				method: "POST",
-				mode: "cors",
-				headers: {
-					'Content-Type': 'application/json;charset=utf-8'
-				},
-				body: JSON.stringify({
-					success: token.success,
-					request_token: token.request_token
-				})
+
+			const session: any = await CallApi.post('authentication/session/new', {
+				success: token.success,
+				request_token: token.request_token
 			})
+
 			this.props.updateSessionID(session.session_id);
-			const dataUser: any = await apiAuthentication(`${API_URL}/account?api_key=${API_KEY_3}&session_id=${session.session_id}`)
+			
+			const dataUser: any =  await CallApi.get('account', {
+				session_id: session.session_id
+			})
 			
 			this.setState({
 				submitting: false

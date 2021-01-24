@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header/Header';
-import MoviesContainer  from './Main/MoviesContainer';
 import Filters from './Sidebar/Filters';
 import Cookies from 'universal-cookie';
 import { apiAuthentication, API_KEY_3, API_URL } from './api/api';
+import MoviesList from './Main/MoviesList';
 
 const THIRTY_DAYS_IN_SECONDS = 2592000;
 const cookies = new Cookies();
@@ -133,7 +133,7 @@ function App() {
 						/>
 					</div>
 					<div className="col-8">
-						<MoviesContainer 
+						<MoviesList
 							state={state}
 							page={page}
 							onChangePage={onChangePage}
