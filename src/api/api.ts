@@ -31,7 +31,6 @@ export class CallApi {
 			api_key: API_KEY_3,
 			...params
 		}
-		debugger
 		return apiAuthentication(`${API_URL}/${url}?${Object.entries(option).map(([k,v])=>`${k}=${v}`).join('&')}`,{
 			mode: "cors",
 			headers: {

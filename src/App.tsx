@@ -10,9 +10,10 @@ const cookies = new Cookies();
 export const AppContext = React.createContext<Partial<ContextProps>>({});
 
 export type ContextProps = { 
-	user: null | TUser;
-	state: TStateFilters;
-	updateUser: (user: TUser) => void;
+	user: null | TUser
+	state: TStateFilters
+	updateUser: (user: TUser) => void
+	updateSessionID:  (session_id: string) => void
 };
 
 export type TGenre = {
@@ -112,14 +113,11 @@ function App() {
 		<AppContext.Provider value={{
 			user,
 			state,
-			updateUser
+			updateUser,
+			updateSessionID
 		}}>
 			<div className="container">
-				<Header 
-					updateSessionID={updateSessionID}
-					updateUser={updateUser}
-					user={user}
-				/>
+				<Header />
 				<div className="row">
 					<div className="col-4">
 						<h4>Фильмы</h4>

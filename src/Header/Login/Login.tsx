@@ -1,27 +1,8 @@
 import React from 'react';
-import { API_KEY_3, API_URL } from '../../api/api';
+import { apiAuthentication, API_KEY_3, API_URL } from '../../api/api';
 import { Modal, ModalBody } from 'reactstrap';
 import LoginForm from './LoginForm';
 import { TUser } from '../../App';
-
-const apiAuthentication = (url: string = "", option = {}) => {
-	return new Promise((resolve, reject) => {
-			fetch(url, option)
-				.then(response => {
-					if(response.status < 400){
-						return response.json();
-					} else {
-						throw response;
-					}
-				})
-				.then(data => resolve(data))
-				.catch(response  => {
-					response.json().then((error: string) => {
-						reject(error);
-					});
-				})
-	})
-}
 
 type TStateLogin = {
 	showModal: boolean
@@ -88,12 +69,10 @@ class Login extends React.Component<TLoginProps> {
         <button
           className="btn btn-success"
 					type="button"
-					//onClick={this.sendPromises}
 					onClick={this.toggleModal}
         >
           Login
         </button>
-
 					<Modal isOpen={showModal} toggle={this.toggleModal}>
 						<ModalBody>
 							<LoginForm updateSessionID={this.props.updateSessionID} updateUser={this.props.updateUser}/>
