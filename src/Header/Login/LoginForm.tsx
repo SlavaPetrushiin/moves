@@ -1,18 +1,21 @@
 import React from 'react';
-import { API_KEY_3, API_URL, apiAuthentication, CallApi } from '../../api/api';
+import { CallApi } from '../../api/api';
 import { TUser } from '../../App';
 
 interface IErrors {
 	password?: string
 	username?: string	
+	repeat_password?: string
 }
 
 interface ITouched {
 	password?: boolean
-	username?: boolean	
+	username?: boolean
+	repeat_password?: string	
 }
 
 interface IState {
+	repeat_password: string
 	password: string
 	username: string
 	errors: IErrors
@@ -28,6 +31,7 @@ type TLoginFormProps = {
 
 class LoginForm extends React.Component<TLoginFormProps, IState> {
 	state: IState = {
+		repeat_password: "",
 		password: "",
 		username: "",
 		errors: {},
@@ -76,13 +80,22 @@ class LoginForm extends React.Component<TLoginFormProps, IState> {
 	}
 
 	validateFields = () => {
+		const {repeat_password, password, username} = this.state;
     const errors: IErrors  = {};
 
-    if (this.state.username === "")
+    if (username === "")
       errors.username = "Заполните поле";
 		
-		if(this.state.password === "")	
+		if(password === "")	
 			errors.password = "Заполните поле";
+		
+		if(repeat_password === ""){
+			errors.repeat_password = "Введите повтороно пароль";
+		}
+
+		if(repeat_password.length > 0 && password.length > 0 && repeat_password !==  password){
+			errors.repeat_password = "Пароли не совпадают";
+		}
 
     return errors;
   };
@@ -97,9 +110,23 @@ class LoginForm extends React.Component<TLoginFormProps, IState> {
 			baseError: "",
 			errors: {
 				...prev.errors,
-				[name]: null
+				[name]: null,
 			}
 		}));
+	}
+
+	handleOnFocusField = (e: React.FormEvent<HTMLInputElement>) => {
+		const name = e.currentTarget.name;
+
+		if(name === "password" && this.state.repeat_password.length > 0 && this.state.errors.repeat_password){
+			this.setState(prev => ({
+				...prev,
+				errors: {
+					...prev.errors,
+					repeat_password: ""
+				},
+			}))
+		}
 	}
 
 	handleOnBlurField = (e: React.FormEvent<HTMLInputElement>) => {
@@ -122,7 +149,7 @@ class LoginForm extends React.Component<TLoginFormProps, IState> {
 	}
 
 	render(){
-		const {username, password, errors, touched, baseError, submitting} = this.state;
+		const {username, password, errors, touched, baseError, submitting, repeat_password} = this.state;
 
 		return (
 		<form className="row g-3">
@@ -153,9 +180,26 @@ class LoginForm extends React.Component<TLoginFormProps, IState> {
 					placeholder="Пароль"
 					onChange={this.handleChangeField}
 					onBlur={this.handleOnBlurField}
+					onFocus={this.handleOnFocusField}
 				/>
 				{errors.password && touched.password && <div className="invalid-feedback">
         	{errors.password}
+      	</div>}
+			</div>
+			<div className="col-12">
+				<label htmlFor="repeat_password" className="form-label">Повторите пароль</label>
+				<input 
+					type="password"
+					className={`form-control ${errors.password && touched.password ? "border-danger" : null}`}
+					id="repeat_password"
+					name="repeat_password"
+					value={repeat_password}
+					placeholder="Введите повторно пароль"
+					onChange={this.handleChangeField}
+					onBlur={this.handleOnBlurField}
+				/>
+				{errors.repeat_password && touched.repeat_password && <div className="invalid-feedback">
+        	{errors.repeat_password}
       	</div>}
 			</div>
 			<div className="col-12">

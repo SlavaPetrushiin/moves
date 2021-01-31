@@ -1,4 +1,3 @@
-  
 export const API_URL = "https://api.themoviedb.org/3";
 
 export const API_KEY_3 = "f4d0b4204922e7fe34a9976c7aa25f90";
@@ -41,6 +40,17 @@ export class CallApi {
 	static post(url: string, params = {}){
 		return apiAuthentication(`${API_URL}/${url}?api_key=${API_KEY_3}`, {
 			method: "POST",
+			mode: "cors",
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},
+			body: JSON.stringify(params)				
+		})
+	}
+
+	static delete(url: string, params = {}){
+		return apiAuthentication(`${API_URL}/${url}?api_key=${API_KEY_3}`, {
+			method: "DELETE",
 			mode: "cors",
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8'

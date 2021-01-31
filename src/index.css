@@ -24,3 +24,12 @@
 	align-items: center;
 }
 
+.dropdown{
+	cursor: pointer;
+	color: white
+}
+
+.dropdown-item{
+	padding: 0 8px;
+}
+

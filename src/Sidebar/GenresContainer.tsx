@@ -1,5 +1,5 @@
 import React from "react";
-import { API_KEY_3, API_URL } from "../api/api";
+import { API_KEY_3, API_URL, CallApi } from "../api/api";
 import Genres from "./Genres";
 
 type TProps = {
@@ -24,10 +24,11 @@ class GenresContainer extends React.Component<TProps, TState> {
 		this.getAllGenres();
 	}
 
-	getAllGenres(){
-		fetch(`${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`)
-			.then(res => res.json())
-			.then(data => this.setState({genresList: data.genres}));	
+	async getAllGenres(){
+		const data: any = await CallApi.get("genre/movie/list", {
+			language: "ru-RU"
+		});
+		this.setState({genresList: data.genres});
 	}
 
 	render(){

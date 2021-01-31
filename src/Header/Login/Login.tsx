@@ -1,5 +1,5 @@
 import React from 'react';
-import { apiAuthentication, API_KEY_3, API_URL } from '../../api/api';
+import { apiAuthentication, API_KEY_3, API_URL, CallApi } from '../../api/api';
 import { Modal, ModalBody } from 'reactstrap';
 import LoginForm from './LoginForm';
 import { TUser } from '../../App';
@@ -16,43 +16,6 @@ type TLoginProps = {
 class Login extends React.Component<TLoginProps> {
 	state: TStateLogin = {
 		showModal: false
-	}
-
-	sendPromises = () => {
-		apiAuthentication(`${API_URL}/authentication/token/new?api_key=${API_KEY_3}`)
-			.then((data: any) => {
-				return apiAuthentication(`${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`, {
-					method: "POST",
-					mode: "cors",
-					headers: {
-						'Content-Type': 'application/json;charset=utf-8'
-					},
-					body: JSON.stringify({
-						"username": "slavaPetrushin",
-						"password": "488661632sla",
-						"request_token": data.request_token
-					})
-				})
-			})
-			.then((data: any) => {
-				return apiAuthentication(`${API_URL}/authentication/session/new?api_key=${API_KEY_3}`, {
-					method: "POST",
-					mode: "cors",
-					headers: {
-						'Content-Type': 'application/json;charset=utf-8'
-					},
-					body: JSON.stringify({
-						"success": data.success,
-						"request_token": data.request_token
-					})
-				})
-			})
-      .then(data => {
-        console.log("session", data);
-      })
-      .catch(error => {
-        console.log("error", error);
-			});
 	}
 
 	toggleModal = () => {

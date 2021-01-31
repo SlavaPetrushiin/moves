@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header/Header';
 import Filters from './Sidebar/Filters';
 import Cookies from 'universal-cookie';
-import { apiAuthentication, API_KEY_3, API_URL } from './api/api';
+import { apiAuthentication, API_KEY_3, API_URL, CallApi } from './api/api';
 import MoviesList from './Main/MoviesList';
 
 const THIRTY_DAYS_IN_SECONDS = 2592000;
@@ -14,6 +14,7 @@ export type ContextProps = {
 	state: TStateFilters
 	updateUser: (user: TUser) => void
 	updateSessionID:  (session_id: string) => void
+	logOut: () => void
 };
 
 export type TGenre = {
@@ -105,6 +106,20 @@ function App() {
 		setSessionID(session_id);
 	}
 
+	const logOut = () => {
+		(async function(){
+			const logOut = await CallApi.delete("authentication/session", {session_id});
+
+			if(logOut){
+				setSessionID(null);
+				setUser(null);
+				cookies.remove("session_id");
+			} else {
+				console.log("Logout Errors!")
+			}
+		})()
+	} 
+
 	const updateUser = (user: TUser) => {
 		setUser(user);
 	}
@@ -114,7 +129,8 @@ function App() {
 			user,
 			state,
 			updateUser,
-			updateSessionID
+			updateSessionID,
+			logOut
 		}}>
 			<div className="container">
 				<Header />
