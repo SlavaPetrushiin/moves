@@ -30,12 +30,12 @@ export class CallApi {
 			api_key: API_KEY_3,
 			...params
 		}
-		return apiAuthentication(`${API_URL}/${url}?${Object.entries(option).map(([k,v])=>`${k}=${v}`).join('&')}`,{
+		return apiAuthentication(`${API_URL}/${url}?${Object.entries(option).map(([k,v])=>`${k}=${v}`).join('&')}&language=ru-RU&`,{
 			mode: "cors",
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8'
 			},			
-		})}
+	})}
 
 	static post(url: string, params = {}){
 		return apiAuthentication(`${API_URL}/${url}?api_key=${API_KEY_3}`, {

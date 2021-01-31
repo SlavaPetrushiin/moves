@@ -1,6 +1,7 @@
 import React from "react";
 import MovieItem from "./MovieItem";
 import MoviesHOC from "./../HOC/MoviesHOC";
+import AppContextHOC from "../HOC/AppContextHOC";
 
 export type TMovie = {
 	adult: boolean;
@@ -41,4 +42,4 @@ class MoviesList extends React.Component<TProps> {
 	}
 }
 
-export default MoviesHOC(MoviesList);
+export default AppContextHOC(MoviesHOC(MoviesList)) ;

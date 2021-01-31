@@ -41,7 +41,6 @@ class Login extends React.Component<TLoginProps> {
 							<LoginForm updateSessionID={this.props.updateSessionID} updateUser={this.props.updateUser}/>
 						</ModalBody>
 					</Modal>
-
       </div>
 		);		
 	}

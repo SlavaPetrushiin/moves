@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header/Header';
-import Filters from './Sidebar/Filters';
 import Cookies from 'universal-cookie';
 import { apiAuthentication, API_KEY_3, API_URL, CallApi } from './api/api';
-import MoviesList from './Main/MoviesList';
+import { BrowserRouter, Route } from 'react-router-dom';
+import MoviesPage from './Pages/MoviesPage';
+import MoviePage from './Pages/MoviePage';
 
 const THIRTY_DAYS_IN_SECONDS = 2592000;
 const cookies = new Cookies();
@@ -12,9 +13,15 @@ export const AppContext = React.createContext<Partial<ContextProps>>({});
 export type ContextProps = { 
 	user: null | TUser
 	state: TStateFilters
+	page: number
+	totalPage: number
+	onChangePage: (page: number) => void
+	onChangeCheckedGenres: (id: number, checked: boolean) => void
 	updateUser: (user: TUser) => void
 	updateSessionID:  (session_id: string) => void
 	logOut: () => void
+	onChangeFilters: (name: keyof  TFilters, value: string) => void
+	setTotalPage: (totalPage: number) => void
 };
 
 export type TGenre = {
@@ -125,38 +132,27 @@ function App() {
 	}
 
   return (
-		<AppContext.Provider value={{
-			user,
-			state,
-			updateUser,
-			updateSessionID,
-			logOut
-		}}>
-			<div className="container">
-				<Header />
-				<div className="row">
-					<div className="col-4">
-						<h4>Фильмы</h4>
-						<Filters 
-							state={state}
-							onChangeFilters={onChangeFilters}
-							page={page}
-							totalPage={totalPage}
-							onChangePage={onChangePage}
-							onChangeCheckedGenres={onChangeCheckedGenres}
-						/>
-					</div>
-					<div className="col-8">
-						<MoviesList
-							state={state}
-							page={page}
-							onChangePage={onChangePage}
-							setTotalPage={setTotalPage}
-						/>
-					</div>
+		<BrowserRouter>
+			<AppContext.Provider value={{
+				user,
+				state,
+				page,
+				totalPage,
+				onChangePage,
+				onChangeCheckedGenres,
+				updateUser,
+				updateSessionID,
+				logOut,
+				onChangeFilters,
+				setTotalPage
+			}}>
+				<div className="container">
+					<Header />
+					<Route path={"/"} exact component={MoviesPage}/>
+					<Route path={"/movie/:id"} component={MoviePage}/>
 				</div>
-			</div>
-	</AppContext.Provider>
+			</AppContext.Provider>			
+		</BrowserRouter>
   );
 }
 
