@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, Route, Switch, NavLink} from 'react-router-dom';
-import { TabContent, TabPane, Nav, NavItem, Row, Col } from 'reactstrap';
+import { Route, Switch, NavLink} from 'react-router-dom';
+import { TabContent, Nav, NavItem } from 'reactstrap';
 import MovieCredits from './MovieCredits';
 import MovieDetail from './MovieDetail';
 import MovieVideos from './MovieVideos';
@@ -30,7 +30,7 @@ class MovieTabs extends React.Component<IProps>{
 								onClick={() => { this.toggleTab('1'); }}
 								activeStyle={{color:"green"}}
 							>
-									Детали
+								Детали
 							</NavLink>
 						</NavItem>
 						<NavItem>
@@ -41,7 +41,6 @@ class MovieTabs extends React.Component<IProps>{
 								activeStyle={{color:"green"}}
 							>
 								Актеры
-
 							</NavLink>
 						</NavItem>
 						<NavItem>
@@ -52,7 +51,6 @@ class MovieTabs extends React.Component<IProps>{
 								activeStyle={{color:"green"}}
 							>
 								Похожие фильмы
-
 							</NavLink>
 						</NavItem>
 					</Nav>
