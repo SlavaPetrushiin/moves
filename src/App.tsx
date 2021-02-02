@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header/Header';
 import Cookies from 'universal-cookie';
 import { apiAuthentication, API_KEY_3, API_URL, CallApi } from './api/api';
-import { BrowserRouter, Route } from 'react-router-dom';
-import MoviesPage from './Pages/MoviesPage';
-import MoviePage from './Pages/MoviePage';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import MoviesPage from './Pages/MoviesPage/MoviesPage';
+import MoviePage from './Pages/MoviePage/MoviePage';
 
 const THIRTY_DAYS_IN_SECONDS = 2592000;
 const cookies = new Cookies();
@@ -148,8 +148,10 @@ function App() {
 			}}>
 				<div className="container">
 					<Header />
-					<Route path={"/"} exact component={MoviesPage}/>
-					<Route path={"/movie/:id"} component={MoviePage}/>
+					<Switch>
+						<Route path={"/"} exact component={MoviesPage}/>
+						<Route path={"/movie/:id"} component={MoviePage}/>
+					</Switch>
 				</div>
 			</AppContext.Provider>			
 		</BrowserRouter>
