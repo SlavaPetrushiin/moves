@@ -32,7 +32,6 @@ interface IState {
 class MovieCredits extends React.Component<ChildComponentProps, IState> {
 	state: IState = {
 		cast: [],
-
 	}
 
 	async componentDidMount(){
@@ -45,18 +44,24 @@ class MovieCredits extends React.Component<ChildComponentProps, IState> {
 		const cast = this.state.cast;
 
 		return (
-			<div className="row">
-				{cast.map(c => {
-					return (
-					<Card key={c.id} className="col-3 mb-3">
-						<CardImg top width="100%" src={`https://image.tmdb.org/t/p/w500/${c.profile_path}`} alt={c.name} />
-						<CardBody>
-							<CardTitle tag="h5">{c.name}</CardTitle>
-							<CardText tag="h6" className="mb-2 text-muted">{c.original_name}</CardText>
-						</CardBody>
-					</Card>
-					)
-				})}
+			<div className="card-container">
+					{cast.map(c => {
+						return (
+						<Card key={c.id} className="card-item">
+							<CardImg 
+								top
+								width="100%"
+								src={`https://image.tmdb.org/t/p/w500/${c.profile_path}`} 
+								className={"card-img"}
+								alt={c.name} 
+							/>
+							<CardBody>
+								<CardTitle tag="h5">{c.name}</CardTitle>
+								<CardText tag="h6" className="mb-2 text-muted">{c.original_name}</CardText>
+							</CardBody>
+						</Card>
+						)
+					})}
 			</div>
 		)
 	}

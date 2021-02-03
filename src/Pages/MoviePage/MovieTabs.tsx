@@ -45,7 +45,7 @@ class MovieTabs extends React.Component<IProps>{
 						</NavItem>
 						<NavItem>
 							<NavLink
-								to={`/movie/${this.props.id}/videos`}
+								to={`/movie/${this.props.id}/similar`}
 								className={`nav-link`}
 								onClick={() => { this.toggleTab('3'); }}
 								activeStyle={{color:"green"}}
@@ -59,7 +59,7 @@ class MovieTabs extends React.Component<IProps>{
 					<Switch>
 						<Route path={`/movie/${this.props.id}/detail`} component={MovieDetail}/>
 						<Route path={`/movie/${this.props.id}/credits`} component={MovieCredits}/>
-						<Route path={`/movie/${this.props.id}/videos`} component={MovieVideos}/>
+						<Route path={`/movie/${this.props.id}/similar`} component={MovieVideos}/>
 					</Switch>
 				</TabContent>
     	</div>
