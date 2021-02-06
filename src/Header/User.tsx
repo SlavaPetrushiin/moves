@@ -1,5 +1,5 @@
 import React from 'react';
-import { TUser, AppContext } from '../App';
+import { TUser } from '../App';
 import AppContextHOC from '../HOC/AppContextHOC';
 
 type THeaderProps = {
@@ -8,7 +8,7 @@ type THeaderProps = {
 
 class User extends React.Component<THeaderProps> {
 	render(){
-		const {user} = this.props
+		const {user} = this.props;
 		return (
 			<div className="user_avatar">
 				<span>{user?.username}</span>

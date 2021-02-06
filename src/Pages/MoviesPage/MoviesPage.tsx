@@ -1,5 +1,4 @@
 import React from "react";
-import AppContextHOC from "../../HOC/AppContextHOC";
 import MoviesList from "../../Main/MoviesList";
 import Filters from "../../Sidebar/Filters";
 

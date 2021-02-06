@@ -1,6 +1,8 @@
 import React from 'react';
 import { CallApi } from '../../api/api';
 import { TUser } from '../../App';
+import { authorizationUser } from '../../store/redusers';
+import { connect } from "react-redux";
 
 interface IErrors {
 	password?: string
@@ -27,6 +29,7 @@ interface IState {
 type TLoginFormProps = {
 	updateSessionID: (session_id: string) => void
 	updateUser: (user: TUser) => void
+	authorizationUser: (username: string, password: string) => void
 }
 
 class LoginForm extends React.Component<TLoginFormProps, IState> {
@@ -44,39 +47,7 @@ class LoginForm extends React.Component<TLoginFormProps, IState> {
 		e.preventDefault();
 		this.setState({submitting: true});
 
-		try{
-			const data: any = await CallApi.get('authentication/token/new');
-
-			const token: any = await CallApi.post('authentication/token/validate_with_login', {
-				username: this.state.username,
-				password: this.state.password,
-				request_token: data.request_token
-			})
-
-			const session: any = await CallApi.post('authentication/session/new', {
-				success: token.success,
-				request_token: token.request_token
-			})
-
-			this.props.updateSessionID(session.session_id);
-			
-			const dataUser: any =  await CallApi.get('account', {
-				session_id: session.session_id
-			})
-			
-			this.setState({
-				submitting: false
-			}, () => {
-				this.props.updateUser(dataUser);
-			})
-		}
-		catch(error){
-			this.setState(prev => ({
-				...prev,
-				baseError: error.status_message,
-				submitting: false
-			}));
-		}
+		this.props.authorizationUser(this.state.username, this.state.password);
 	}
 
 	validateFields = () => {
@@ -220,4 +191,8 @@ class LoginForm extends React.Component<TLoginFormProps, IState> {
 	}
 }
 
-export default LoginForm;
+interface IDispatchToProps {
+	authorizationUser: (username: string, password: string) => void;
+}
+
+export default connect(null, {authorizationUser})(LoginForm);

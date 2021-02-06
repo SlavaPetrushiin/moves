@@ -5,8 +5,10 @@ import { apiAuthentication, API_KEY_3, API_URL, CallApi } from './api/api';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import MoviesPage from './Pages/MoviesPage/MoviesPage';
 import MoviePage from './Pages/MoviePage/MoviePage';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
-const THIRTY_DAYS_IN_SECONDS = 2592000;
+const THIRTY_DAYS_IN_SECONDS = 2_592_000;
 const cookies = new Cookies();
 export const AppContext = React.createContext<Partial<ContextProps>>({});
 
@@ -74,7 +76,7 @@ function App() {
 
 	}, []);
 
-	const onChangeFilters = (name: keyof  TFilters, value: string) => {
+	const onChangeFilters = (name: keyof  TFilters, value: string): void => {
 		const newFilters = {...state.filters};
 		newFilters[name] = value;
 
@@ -85,7 +87,7 @@ function App() {
 		setPage(page);
 	}
 
-	const onChangeCheckedGenres = (id: number, checked: boolean) => {
+	const onChangeCheckedGenres = (id: number, checked: boolean): void => {
 		if(checked){
 			setState((prev: TStateFilters) => ({
 				...prev,
@@ -108,12 +110,12 @@ function App() {
 
 	}
 
-	const updateSessionID = (session_id: string) => {
+	const updateSessionID = (session_id: string): void => {
 		cookies.set('session_id', session_id, { path: '/', maxAge: THIRTY_DAYS_IN_SECONDS });
 		setSessionID(session_id);
 	}
 
-	const logOut = () => {
+	const logOut = (): void => {
 		(async function(){
 			const logOut = await CallApi.delete("authentication/session", {session_id});
 
@@ -127,33 +129,35 @@ function App() {
 		})()
 	} 
 
-	const updateUser = (user: TUser) => {
+	const updateUser = (user: TUser): void => {
 		setUser(user);
 	}
 
   return (
 		<BrowserRouter>
-			<AppContext.Provider value={{
-				user,
-				state,
-				page,
-				totalPage,
-				onChangePage,
-				onChangeCheckedGenres,
-				updateUser,
-				updateSessionID,
-				logOut,
-				onChangeFilters,
-				setTotalPage
-			}}>
-				<div className="container">
-					<Header />
-					<Switch>
-						<Route path={"/"} exact component={MoviesPage}/>
-						<Route path={"/movie/:id"} component={MoviePage}/>
-					</Switch>
-				</div>
-			</AppContext.Provider>			
+			<Provider store={store}>
+				<AppContext.Provider value={{
+					user,
+					state,
+					page,
+					totalPage,
+					onChangePage,
+					onChangeCheckedGenres,
+					updateUser,
+					updateSessionID,
+					logOut,
+					onChangeFilters,
+					setTotalPage
+				}}>
+					<div className="container">
+						<Header />
+						<Switch>
+							<Route path={"/"} exact component={MoviesPage}/>
+							<Route path={"/movie/:id"} component={MoviePage}/>
+						</Switch>
+					</div>
+				</AppContext.Provider>	
+			</Provider>
 		</BrowserRouter>
   );
 }
