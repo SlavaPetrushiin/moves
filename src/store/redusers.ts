@@ -149,14 +149,14 @@ export const deleteSessionID = (): IDeleteSessionID => ({type: DELETE_SESSION_ID
 
 
 /* Thunk */
-export const logOutThunk = (session_id: string): IThunk => async (dispatch: Dispatch): Promise<any> => {
-		const logOut = await CallApi.delete("authentication/session", {session_id});
-		if(logOut){
-			cookies.remove("session_id");
-			dispatch(deleteSessionID());
-			dispatch(deleteUser());
-		} else 
-			console.log("Logout Errors!")		
+export const logOutThunk = (): IThunk => async (dispatch: Dispatch, getState): Promise<any> => {
+	const session_id = getState().userReducer.session_id;
+	const logOut = await CallApi.delete("authentication/session", {session_id});
+	if(logOut){
+		cookies.remove("session_id");
+		dispatch(deleteSessionID());
+	} else 
+		console.log("Logout Errors!")		
 }
 
 export const authorizationUser = (username: string, password: string): IThunk => async (dispatch: Dispatch): Promise<any> => {

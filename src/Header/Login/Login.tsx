@@ -1,19 +1,12 @@
 import React from 'react';
-import { apiAuthentication, API_KEY_3, API_URL, CallApi } from '../../api/api';
 import { Modal, ModalBody } from 'reactstrap';
 import LoginForm from './LoginForm';
-import { TUser } from '../../App';
 
 type TStateLogin = {
 	showModal: boolean
 }
 
-type TLoginProps = {
-	updateSessionID: (session_id: string) => void
-	updateUser: (user: TUser) => void
-}
-
-class Login extends React.Component<TLoginProps> {
+class Login extends React.Component<any, TStateLogin> {
 	state: TStateLogin = {
 		showModal: false
 	}
@@ -38,7 +31,7 @@ class Login extends React.Component<TLoginProps> {
         </button>
 					<Modal isOpen={showModal} toggle={this.toggleModal}>
 						<ModalBody>
-							<LoginForm updateSessionID={this.props.updateSessionID} updateUser={this.props.updateUser}/>
+							<LoginForm />
 						</ModalBody>
 					</Modal>
       </div>

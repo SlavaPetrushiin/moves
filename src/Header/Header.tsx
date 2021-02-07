@@ -1,30 +1,30 @@
 import React from 'react';
-import { TUser } from '../App';
 import Login from './Login/Login';
-import AppContextHOC from '../HOC/AppContextHOC';
 import HeaderDropdownMenu from './HeaderDropdownMenu';
+import { connect } from 'react-redux';
+import { RootState } from '../store/store';
+import {logOutThunk, User} from './../store/redusers';
 
-type THeaderProps = {
-	updateSessionID: (session_id: string) => void
-	updateUser: (user: TUser) => void
-	logOut: () => void
-	user: null | TUser
+interface IMapStateToProps {
+	user: User | null
 }
 
-class Header extends React.Component<THeaderProps> {
+interface IMapDispatchToProps {
+	logOutThunk: () => void
+}
+
+
+class Header extends React.Component<any & IMapStateToProps & IMapDispatchToProps> {
 	render(){
 		return (
 			<header className="row">
 				<div className="col-12 bg-secondary pt-3 pb-3 mb-3 d-flex justify-content-end align-items-center">
 					{this.props.user 
 						? <HeaderDropdownMenu
-							logOut={this.props.logOut}
+							logOut={this.props.logOutThunk}
 							user={this.props.user}
 						/>
-						: <Login 
-							updateSessionID={this.props.updateSessionID}
-							updateUser={this.props.updateUser}
-						/>
+						: <Login />
 					}
 				</div>
 			</header>
@@ -32,4 +32,10 @@ class Header extends React.Component<THeaderProps> {
 	}
 }
 
-export default AppContextHOC(Header);
+const mapStateToProps = (state: RootState) => {
+	return {
+		user: state.userReducer.user
+	}
+}
+
+export default connect(mapStateToProps, {logOutThunk})(Header);

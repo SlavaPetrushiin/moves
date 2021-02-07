@@ -1,6 +1,4 @@
 import React from 'react';
-import { CallApi } from '../../api/api';
-import { TUser } from '../../App';
 import { authorizationUser } from '../../store/redusers';
 import { connect } from "react-redux";
 
@@ -26,13 +24,7 @@ interface IState {
 	submitting: boolean
 }
 
-type TLoginFormProps = {
-	updateSessionID: (session_id: string) => void
-	updateUser: (user: TUser) => void
-	authorizationUser: (username: string, password: string) => void
-}
-
-class LoginForm extends React.Component<TLoginFormProps, IState> {
+class LoginForm extends React.Component<any, IState> {
 	state: IState = {
 		repeat_password: "",
 		password: "",
