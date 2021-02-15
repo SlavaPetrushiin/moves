@@ -15,7 +15,9 @@ import {
 	ISetSessionID,
 	IDeleteSessionID,
 	IS_SHOW_LOGIN_MODAL,
-	IUpdateIsAuth
+	IUpdateIsAuth,
+	UPDATE_FILTERS,
+	IUpdateFilters
 } from "./consts";
 
 const THIRTY_DAYS_IN_SECONDS = 2_592_000;
@@ -51,6 +53,8 @@ export type TFilters =  {
 export type InitialStateMovies = {
 	filters: TFilters
 	movies: TMovie[]
+	page: number | null
+	totalPage: number | null
 }
 
 export type InitialStateUser = {
@@ -83,6 +87,8 @@ const initialStateMovies: InitialStateMovies= {
 		with_genres: [],
 		primary_release_year: ''
 	},
+	page: 1,
+	totalPage: 1,
 	movies: []
 }
 
@@ -98,6 +104,15 @@ const initialStateIsShowModal: InitialStateIsShowModal= {
 
 export const moviesReducer = (state: InitialStateMovies = initialStateMovies, action: allActionTypes): InitialStateMovies => {
 	switch(action.type){
+		case UPDATE_FILTERS: {
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					[action.name]: action.value
+				}
+			}
+		}
 		default: 
 			return state;
 	}
@@ -146,6 +161,9 @@ export const updateIsAuth = (user: User, session_id: string): IUpdateIsAuth => (
 export const deleteUser = (): IDeleteUser => ({type: DELETE_USER});
 export const setSessionID = (session_id: string): ISetSessionID => ({type: SET_SESSION_ID, session_id});
 export const deleteSessionID = (): IDeleteSessionID => ({type: DELETE_SESSION_ID});
+
+/* Action  userMovies */
+export const updateFilters= (name: string, value: string): IUpdateFilters => ({type: UPDATE_FILTERS, name, value});
 
 
 /* Thunk */

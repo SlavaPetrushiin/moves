@@ -8,13 +8,13 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import store, { RootState } from './store/store';
 export const AppContext = React.createContext<Partial<ContextProps>>({});
 
-export type ContextProps = { 
+export type ContextProps = {
 	state: TStateFilters
 	page: number
 	totalPage: number
 	onChangePage: (page: number) => void
 	onChangeCheckedGenres: (id: number, checked: boolean) => void
-	onChangeFilters: (name: keyof  TFilters, value: string) => void
+	onChangeFilters: (name: keyof TFilters, value: string) => void
 	setTotalPage: (totalPage: number) => void
 };
 
@@ -31,10 +31,10 @@ export type TGenre = {
 	name: string
 }
 
-export type TFilters =  {
+export type TFilters = {
 	sort_by: string;
 	with_genres: any;
-	primary_release_year: string;	
+	primary_release_year: string;
 }
 
 export type TStateFilters = {
@@ -42,7 +42,7 @@ export type TStateFilters = {
 }
 
 function App() {
-	const {session_id} = useSelector((state: RootState) => state.userReducer);
+	const { session_id } = useSelector((state: RootState) => state.userReducer);
 	const dispatch = useDispatch();
 	const [state, setState] = useState<TStateFilters>({
 		filters: {
@@ -57,7 +57,7 @@ function App() {
 
 	useEffect(() => {
 		(async () => {
-			if(session_id){
+			if (session_id) {
 				const dataUser: any = await apiAuthentication(`${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`);
 				//updateUser(dataUser);
 			}
@@ -65,11 +65,11 @@ function App() {
 
 	}, []);
 
-	const onChangeFilters = (name: keyof  TFilters, value: string): void => {
-		const newFilters = {...state.filters};
+	const onChangeFilters = (name: keyof TFilters, value: string): void => {
+		const newFilters = { ...state.filters };
 		newFilters[name] = value;
 
-		setState({filters: newFilters})
+		setState({ filters: newFilters })
 	}
 
 	const onChangePage = (page: number) => {
@@ -77,7 +77,7 @@ function App() {
 	}
 
 	const onChangeCheckedGenres = (id: number, checked: boolean): void => {
-		if(checked){
+		if (checked) {
 			setState((prev: TStateFilters) => ({
 				...prev,
 				filters: {
@@ -87,37 +87,26 @@ function App() {
 			}))
 		}
 
-		if(!checked){
+		if (!checked) {
 			setState((prev: TStateFilters) => ({
 				...prev,
 				filters: {
 					...prev.filters,
-					with_genres: prev.filters.with_genres.filter((genre: number )=> genre !== id)
+					with_genres: prev.filters.with_genres.filter((genre: number) => genre !== id)
 				}
 			}))
 		}
-
 	}
 
-  return (
-				<AppContext.Provider value={{
-					state,
-					page,
-					totalPage,
-					onChangePage,
-					onChangeCheckedGenres,
-					onChangeFilters,
-					setTotalPage
-				}}>
-					<div className="container">
-						<Header />
-						<Switch>
-							<Route path={"/"} exact component={MoviesPage}/>
-							<Route path={"/movie/:id"} component={MoviePage}/>
-						</Switch>
-					</div>
-				</AppContext.Provider>	
-  );
+	return (
+		<div className="container">
+			<Header />
+			<Switch>
+				<Route path={"/"} exact component={MoviesPage} />
+				<Route path={"/movie/:id"} component={MoviePage} />
+			</Switch>
+		</div>
+	);
 }
 
 export default App;

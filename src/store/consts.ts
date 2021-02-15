@@ -6,6 +6,8 @@ export const DELETE_SESSION_ID = 'DELETE_SESSION_ID';
 export const IS_SHOW_LOGIN_MODAL = 'IS_SHOW_LOGIN_MODAL';
 export const UPDATE_IS_AUTH = 'UPDATE_IS_AUTH';
 
+export const UPDATE_FILTERS = 'UPDATE_FILTERS';
+
 
 export interface ISetUser {
 	type: typeof SET_USER
@@ -35,4 +37,10 @@ export interface IUpdateIsAuth {
 	session_id: string
 }
 
-export type allActionTypes = ISetUser | IDeleteUser | ISetSessionID | IDeleteSessionID | IIsShowModal | IUpdateIsAuth
+export interface IUpdateFilters {
+	type: typeof UPDATE_FILTERS
+	name: string
+	value: string
+}
+
+export type allActionTypes = ISetUser | IDeleteUser | ISetSessionID | IDeleteSessionID | IIsShowModal | IUpdateIsAuth | IUpdateFilters

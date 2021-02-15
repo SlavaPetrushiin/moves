@@ -1,6 +1,6 @@
 import React from "react";
 import {API_URL, API_KEY_3} from "../api/api";
-import { TStateFilters, TFilters } from "../App";
+import {TFilters } from "../App";
 
 export type TMovie = {
 	adult: boolean;
@@ -24,13 +24,15 @@ type TState =  {
 }
 
 type TProps = {
-	state: TStateFilters
+	//movies: TStateFilters
+	//page: number
+	//onChangePage: (page: number) => void
+	//setTotalPage: (totalPage: number) => void
+	filters: TFilters
 	page: number
-	onChangePage: (page: number) => void
-	setTotalPage: (totalPage: number) => void
 }
 
-export default (Component: any) => class MoviesHOC extends React.Component<TProps, TState> {
+export default (Component: any) => class MoviesHOC extends React.Component<any> {
   state: TState = {
 		movies: [],
   }
@@ -44,31 +46,31 @@ export default (Component: any) => class MoviesHOC extends React.Component<TProp
 			.then(res => res.json())
 			.then(data => {
 				this.setState({movies: data.results});
-				this.props.setTotalPage(data.total_pages);
+				//this.props.setTotalPage(data.total_pages);
 			});	
 	}
 
 	componentDidMount(){
-		this.getMovies(this.props.state.filters, this.props.page);
+		this.getMovies(this.props.filters, this.props.page);
 	}
 
 	componentDidUpdate(prevProps: TProps){
-		if(this.props.state.filters.sort_by !== prevProps.state.filters.sort_by){
-			this.props.onChangePage(1);
-			this.getMovies(this.props.state.filters, 1);
+		if(this.props.filters.sort_by !== prevProps.filters.sort_by){
+			//this.props.onChangePage(1);
+			//this.getMovies(this.props.filters, 1);
 		}
 
 		if(this.props.page !== prevProps.page)
-			this.getMovies(this.props.state.filters, this.props.page);
+			//this.getMovies(this.props.filters, this.props.page);
 
-		if(this.props.state.filters.with_genres.length !== prevProps.state.filters.with_genres.length){
-			this.props.onChangePage(1);
-			this.getMovies(this.props.state.filters, 1);
+		if(this.props.filters.with_genres.length !== prevProps.filters.with_genres.length){
+			//this.props.onChangePage(1);
+			//this.getMovies(this.props.filters, 1);
 		}
 
-		if(this.props.state.filters.primary_release_year !== prevProps.state.filters.primary_release_year){
-			this.props.onChangePage(1);
-			this.getMovies(this.props.state.filters, 1);
+		if(this.props.filters.primary_release_year !== prevProps.filters.primary_release_year){
+			//this.props.onChangePage(1);
+			//this.getMovies(this.props.filters, 1);
 		}
 	}
 

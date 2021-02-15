@@ -1,38 +1,56 @@
 import React from "react";
-import { TStateFilters } from "../App";
 import SortBy from "./SortBy";
 import GenresContainer from "./GenresContainer";
 import PrimaryReleaseYear from "./PrimaryReleaseYear";
 import Pagination from "./Pagination";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { connect, ConnectedProps } from "react-redux";
+import { RootState } from "../store/store";
+import { TFilters } from "../store/redusers";
 
-type TProps = {
-	state: TStateFilters
-	page: number
-	totalPage: number
-	onChangePage: (page: number) => void
-	onChangeFilters: (name: any, value: string) => void
-	onChangeCheckedGenres: (id: number, checked: boolean) => void
+interface IMapStateToProps {
+	page: number | null
+	totalPage: number | null
+	filters: TFilters
 }
 
-class Filters extends React.PureComponent<TProps> {
-	render(){
-		const {page, totalPage, state,  onChangeCheckedGenres, onChangeFilters, onChangePage} = this.props;
+interface IDispatchToProps {
+  onChangeCheckedGenres: () => void,
+	onChangeFilters: () => void,
+	onChangePage: () => void
+}
 
+class Filters extends React.PureComponent<any & IMapStateToProps & IDispatchToProps> {
+	render() {
+		const {page, totalPage, filters,  onChangeCheckedGenres, onChangeFilters, onChangePage} = this.props;
 
 		return (
-				<form className="mb-3">
-					<SortBy onChangeSortBy={onChangeFilters} filters={state.filters}/>
-					<PrimaryReleaseYear onChangeSortBy={onChangeFilters} filters={state.filters}/>
-					<Pagination 
-						page={page}
-						totalPage={totalPage}
-						onChangePage={onChangePage}
-					/>
-					<GenresContainer checkedGenres={onChangeCheckedGenres}/>
-				</form>
+			<form className="mb-3">
+				<SortBy onChangeSortBy={() => { }} filters={filters} />
+				<PrimaryReleaseYear onChangeSortBy={() => { }} filters={filters} />
+				<Pagination
+					page={page}
+					totalPage={totalPage}
+					onChangePage={() => { }}
+				/>
+				<GenresContainer checkedGenres={() => { }} />
+			</form>
 		)
 	}
 }
 
-export default AppContextHOC(Filters);
+const mapState = (state: RootState): IMapStateToProps => {
+	return {
+		page: state.moviesReducer.page,
+		totalPage: state.moviesReducer.totalPage,
+		filters: state.moviesReducer.filters
+	}
+}
+
+const mapDispatch: IDispatchToProps = {
+  onChangeCheckedGenres: () => {},
+	onChangeFilters: () => {},
+	onChangePage: () => {}
+}
+
+
+export default connect(mapState, mapDispatch)(Filters);

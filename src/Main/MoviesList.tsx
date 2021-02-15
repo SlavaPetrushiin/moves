@@ -1,7 +1,9 @@
 import React from "react";
 import MovieItem from "./MovieItem";
 import MoviesHOC from "./../HOC/MoviesHOC";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { connect } from "react-redux";
+import { RootState } from "../store/store";
+import { TFilters } from "../App";
 
 export type TMovie = {
 	adult: boolean;
@@ -20,11 +22,14 @@ export type TMovie = {
 	vote_count: number;
 }
 
-type TProps = {
-	movies: TMovie[]
+type MapState = {
+	//movies: TMovie[],
+	//page: number,
+	filters: TFilters
 }
 
-class MoviesList extends React.Component<TProps> {
+
+class MoviesList extends React.Component< any & MapState> {
 	render(){
 		const movies = this.props.movies;
 
@@ -42,4 +47,14 @@ class MoviesList extends React.Component<TProps> {
 	}
 }
 
-export default AppContextHOC(MoviesHOC(MoviesList)) ;
+const mapState = (state: RootState) => {
+	return {
+		//movies: state.moviesReducer.movies,
+		//page: state.moviesReducer.page,
+		filters: state.moviesReducer.filters
+	}
+}
+
+
+
+export default connect(mapState, null)(MoviesHOC(MoviesList));
