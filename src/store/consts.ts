@@ -8,7 +8,6 @@ export const UPDATE_IS_AUTH = 'UPDATE_IS_AUTH';
 
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
 
-
 export interface ISetUser {
 	type: typeof SET_USER
 	user: User
@@ -40,7 +39,7 @@ export interface IUpdateIsAuth {
 export interface IUpdateFilters {
 	type: typeof UPDATE_FILTERS
 	name: string
-	value: string
+	value: string | number[]
 }
 
 export type allActionTypes = ISetUser | IDeleteUser | ISetSessionID | IDeleteSessionID | IIsShowModal | IUpdateIsAuth | IUpdateFilters

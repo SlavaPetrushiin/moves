@@ -57,20 +57,19 @@ export default (Component: any) => class MoviesHOC extends React.Component<any> 
 	componentDidUpdate(prevProps: TProps){
 		if(this.props.filters.sort_by !== prevProps.filters.sort_by){
 			//this.props.onChangePage(1);
-			//this.getMovies(this.props.filters, 1);
+			this.getMovies(this.props.filters, 1);
 		}
 
 		if(this.props.page !== prevProps.page)
 			//this.getMovies(this.props.filters, this.props.page);
-
-		if(this.props.filters.with_genres.length !== prevProps.filters.with_genres.length){
+		if(this.props.filters.with_genres.length > 0){
 			//this.props.onChangePage(1);
-			//this.getMovies(this.props.filters, 1);
+			this.getMovies(this.props.filters, 1);
 		}
 
 		if(this.props.filters.primary_release_year !== prevProps.filters.primary_release_year){
 			//this.props.onChangePage(1);
-			//this.getMovies(this.props.filters, 1);
+			this.getMovies(this.props.filters, 1);
 		}
 	}
 

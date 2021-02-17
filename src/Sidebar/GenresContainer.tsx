@@ -1,9 +1,10 @@
 import React from "react";
-import { API_KEY_3, API_URL, CallApi } from "../api/api";
+import { CallApi } from "../api/api";
 import Genres from "./Genres";
+import { TFilters } from "../store/redusers";
 
 type TProps = {
-	checkedGenres: (id: number, checked: boolean) => void
+	checkedGenres: (id: number, name: keyof TFilters, checked: boolean) => void
 }
 
 export type TGenre = {
@@ -43,4 +44,4 @@ class GenresContainer extends React.Component<TProps, TState> {
 	}
 }
 
-export default GenresContainer;
+export default React.memo(GenresContainer);

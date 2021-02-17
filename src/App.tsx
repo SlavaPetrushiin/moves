@@ -65,13 +65,6 @@ function App() {
 
 	}, []);
 
-	const onChangeFilters = (name: keyof TFilters, value: string): void => {
-		const newFilters = { ...state.filters };
-		newFilters[name] = value;
-
-		setState({ filters: newFilters })
-	}
-
 	const onChangePage = (page: number) => {
 		setPage(page);
 	}

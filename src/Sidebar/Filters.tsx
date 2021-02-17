@@ -5,7 +5,7 @@ import PrimaryReleaseYear from "./PrimaryReleaseYear";
 import Pagination from "./Pagination";
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../store/store";
-import { TFilters } from "../store/redusers";
+import { TFilters, updateFiltersThunk, updateGenresThunk } from "../store/redusers";
 
 interface IMapStateToProps {
 	page: number | null
@@ -14,25 +14,25 @@ interface IMapStateToProps {
 }
 
 interface IDispatchToProps {
-  onChangeCheckedGenres: () => void,
-	onChangeFilters: () => void,
-	onChangePage: () => void
+  updateGenresThunk?: (id: number, name: keyof TFilters, checked: boolean) => void
+	updateFiltersThunk?: (name: keyof TFilters, value: string) => void
+	onChangePage?: (page: number) => void
 }
 
 class Filters extends React.PureComponent<any & IMapStateToProps & IDispatchToProps> {
 	render() {
-		const {page, totalPage, filters,  onChangeCheckedGenres, onChangeFilters, onChangePage} = this.props;
+		const {page, totalPage, filters,  updateFiltersThunk, updateGenresThunk } = this.props;
 
 		return (
 			<form className="mb-3">
-				<SortBy onChangeSortBy={() => { }} filters={filters} />
-				<PrimaryReleaseYear onChangeSortBy={() => { }} filters={filters} />
+				<SortBy onChangeSortBy={updateFiltersThunk} filters={filters} />
+				<PrimaryReleaseYear onChangeSortBy={updateFiltersThunk} filters={filters} />
 				<Pagination
 					page={page}
 					totalPage={totalPage}
 					onChangePage={() => { }}
 				/>
-				<GenresContainer checkedGenres={() => { }} />
+				<GenresContainer checkedGenres={updateGenresThunk} />
 			</form>
 		)
 	}
@@ -46,11 +46,7 @@ const mapState = (state: RootState): IMapStateToProps => {
 	}
 }
 
-const mapDispatch: IDispatchToProps = {
-  onChangeCheckedGenres: () => {},
-	onChangeFilters: () => {},
-	onChangePage: () => {}
-}
 
 
-export default connect(mapState, mapDispatch)(Filters);
+
+export default connect(mapState, {updateFiltersThunk, updateGenresThunk})(Filters);

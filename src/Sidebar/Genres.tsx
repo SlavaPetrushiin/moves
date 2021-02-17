@@ -1,9 +1,10 @@
 import React from "react";
 import { TGenre } from "../App";
+import { TFilters } from "../store/redusers";
 
 type TProps = {
 	genres: TGenre[]
-	checkedGenres: (id: number, checked: boolean) => void
+	checkedGenres: (id: number, name: keyof TFilters, checked: boolean) => void
 }
 
 class Genres extends React.Component<TProps> {
@@ -20,7 +21,7 @@ class Genres extends React.Component<TProps> {
 								type="checkbox"
 								value={genre.id}
 								id={`genre${genre.id}`}
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkedGenres(+genre.id, e.currentTarget.checked)}
+								onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkedGenres(+genre.id, 'with_genres', e.currentTarget.checked)}
 							/> 
 							<label className="form-check-label" htmlFor={`genre${genre.id}`}>
 								{genre.name}
