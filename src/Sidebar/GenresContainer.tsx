@@ -34,12 +34,11 @@ class GenresContainer extends React.Component<TProps, TState> {
 
 	render(){
 		const genres = this.state.genresList;
-		const checkedGenres = this.props.checkedGenres;
 
 		if(genres.length === 0) return null;
 
 		return (
-			<Genres genres={genres} checkedGenres={checkedGenres}/>
+			<Genres genres={genres} checkedGenres={this.props.checkedGenres}/>
 		)
 	}
 }

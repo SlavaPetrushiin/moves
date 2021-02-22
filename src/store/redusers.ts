@@ -4,6 +4,8 @@ import { Dispatch } from "redux";
 import { ThunkAction } from 'redux-thunk';
 import Cookies from 'universal-cookie';
 import {
+	IUpdatePage,
+	IUpdateTotalPage,
 	allActionTypes,
 	SET_USER,
 	DELETE_USER,
@@ -18,6 +20,10 @@ import {
 	IUpdateIsAuth,
 	UPDATE_FILTERS,
 	IUpdateFilters,
+	UPDATE_TOTAL_PAGE,
+	UPDATE_PAGE,
+	UPDATE_MOVIES,
+	IUpdateMovies
 } from "./consts";
 
 const THIRTY_DAYS_IN_SECONDS = 2_592_000;
@@ -53,8 +59,8 @@ export type TFilters = {
 export type InitialStateMovies = {
 	filters: TFilters
 	movies: TMovie[]
-	page: number | null
-	totalPage: number | null
+	page: number
+	totalPage: number
 }
 
 export type InitialStateUser = {
@@ -113,6 +119,24 @@ export const moviesReducer = (state: InitialStateMovies = initialStateMovies, ac
 				}				
 			}
 		}
+		case UPDATE_TOTAL_PAGE: {
+			return {
+				...state,
+				totalPage: action.value
+			}
+		}
+		case UPDATE_PAGE: {
+			return {
+				...state,
+				page: action.value
+			}
+		}
+		case UPDATE_MOVIES: {
+			return {
+				...state,
+				movies: action.value
+			}
+		}
 		default:
 			return state;
 	}
@@ -161,6 +185,9 @@ export const updateIsAuth = (user: User, session_id: string): IUpdateIsAuth => (
 export const deleteUser = (): IDeleteUser => ({ type: DELETE_USER });
 export const setSessionID = (session_id: string): ISetSessionID => ({ type: SET_SESSION_ID, session_id });
 export const deleteSessionID = (): IDeleteSessionID => ({ type: DELETE_SESSION_ID });
+export const updatePage = (value: number) : IUpdatePage => ({type: UPDATE_PAGE, value});
+export const updateTotalPage = (value: number) : IUpdateTotalPage => ({type: UPDATE_TOTAL_PAGE, value});
+export const updateMovies = (value: any) : IUpdateMovies => ({type: UPDATE_MOVIES, value});
 
 /* Action  userMovies */
 export const updateFilters = (name: string, value: string): IUpdateFilters => ({ type: UPDATE_FILTERS, name, value });
@@ -220,3 +247,12 @@ export const getMoviesThunk = (): IThunk => (dispatch: Dispatch): Promise<any> =
 	return Promise.resolve();
 }
 
+export const updateTotalPageThunk = (totalPage: number): IThunk => (dispatch: Dispatch): Promise<any> => {
+	dispatch(updateTotalPage(totalPage))
+	return Promise.resolve();
+}
+
+export const updatePageThunk = (page: number): IThunk => (dispatch: Dispatch): Promise<any> => {
+	dispatch(updatePage(page))
+	return Promise.resolve();
+}

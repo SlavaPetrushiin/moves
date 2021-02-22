@@ -102,4 +102,8 @@ function App() {
 	);
 }
 
+
+//@ts-ignore
+window.store = store
+
 export default App;

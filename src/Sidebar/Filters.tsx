@@ -3,9 +3,9 @@ import SortBy from "./SortBy";
 import GenresContainer from "./GenresContainer";
 import PrimaryReleaseYear from "./PrimaryReleaseYear";
 import Pagination from "./Pagination";
-import { connect, ConnectedProps } from "react-redux";
+import { connect } from "react-redux";
 import { RootState } from "../store/store";
-import { TFilters, updateFiltersThunk, updateGenresThunk } from "../store/redusers";
+import { TFilters, updateFiltersThunk, updateGenresThunk, updatePageThunk } from "../store/redusers";
 
 interface IMapStateToProps {
 	page: number | null
@@ -21,7 +21,7 @@ interface IDispatchToProps {
 
 class Filters extends React.PureComponent<any & IMapStateToProps & IDispatchToProps> {
 	render() {
-		const {page, totalPage, filters,  updateFiltersThunk, updateGenresThunk } = this.props;
+		const {page, totalPage, filters,  updateFiltersThunk, updateGenresThunk, updatePageThunk } = this.props;
 
 		return (
 			<form className="mb-3">
@@ -30,7 +30,7 @@ class Filters extends React.PureComponent<any & IMapStateToProps & IDispatchToPr
 				<Pagination
 					page={page}
 					totalPage={totalPage}
-					onChangePage={() => { }}
+					onChangePage={updatePageThunk}
 				/>
 				<GenresContainer checkedGenres={updateGenresThunk} />
 			</form>
@@ -49,4 +49,4 @@ const mapState = (state: RootState): IMapStateToProps => {
 
 
 
-export default connect(mapState, {updateFiltersThunk, updateGenresThunk})(Filters);
+export default connect(mapState, {updateFiltersThunk, updateGenresThunk, updatePageThunk})(Filters);
