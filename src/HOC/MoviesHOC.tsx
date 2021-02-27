@@ -4,7 +4,7 @@ import { API_URL, API_KEY_3 } from "../api/api";
 import { TFilters } from "../App";
 import { RootState } from "../store/store";
 import { bindActionCreators } from 'redux'
-import {updateMovies} from "./../store/redusers";
+import {updateMovies, updateTotalPageThunk} from "./../store/redusers";
 import { Dispatch } from "redux";
 
 export type TMovie = {
@@ -32,6 +32,7 @@ interface IMapState {
 
 interface IDispatchState {
 	getMovies: (movies: TMovie[]) => void
+	updateTotalPageThunk: (pages: number) => void
 }
 
 const mapStateToProps = (state: RootState): IMapState => {
@@ -45,7 +46,8 @@ const mapStateToProps = (state: RootState): IMapState => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchState => {
   return bindActionCreators(
     {
-      getMovies: updateMovies
+      getMovies: updateMovies,
+			updateTotalPageThunk: updateTotalPageThunk
     },
     dispatch
   );
@@ -64,7 +66,7 @@ export default (Component: any) => connector(class MoviesHOC extends React.Compo
 			.then(res => res.json())
 			.then(data => {
 				this.props.getMovies(data.results);
-				//this.props.updateTotalPageThunk(data.total_pages);
+				this.props.updateTotalPageThunk(data.total_pages);
 			});
 	}
 
@@ -72,15 +74,22 @@ export default (Component: any) => connector(class MoviesHOC extends React.Compo
 		this.getMovies(this.props.filters, this.props.page);
 	}
 
-	componentDidUpdate(nextProps: IMapState){
-		if(this.props.filters.primary_release_year !== nextProps.filters.primary_release_year){
-			this.getMovies(nextProps.filters, 1);
+	componentDidUpdate(prevProps: IMapState){
+		if(this.props.filters.primary_release_year !== prevProps.filters.primary_release_year){
+			this.getMovies(this.props.filters, 1);
+			return;
 		}
-		if(this.props.filters.sort_by !== nextProps.filters.sort_by){
-			this.getMovies(nextProps.filters, 1);
+		if(this.props.filters.sort_by !== prevProps.filters.sort_by){
+			this.getMovies(this.props.filters, 1);
+			return;
 		}
-		if(this.props.filters.sort_by.length !== nextProps.filters.with_genres.length){
-			this.getMovies(nextProps.filters, 1);
+		if(this.props.filters.with_genres.length !== prevProps.filters.with_genres.length){
+			this.getMovies(this.props.filters, 1);
+			return;
+		}
+		if(this.props.page !== prevProps.page){
+			this.getMovies(this.props.filters, this.props.page);
+			return;
 		}
 	}
 
