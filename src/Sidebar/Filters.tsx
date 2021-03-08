@@ -46,7 +46,4 @@ const mapState = (state: RootState): IMapStateToProps => {
 	}
 }
 
-
-
-
 export default connect(mapState, {updateFiltersThunk, updateGenresThunk, updatePageThunk})(Filters);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent} from "react";
 
 type TProps = {
 	page: number
@@ -6,12 +6,7 @@ type TProps = {
 	onChangePage: (page: number) => void
 }
 
-class Pagination extends React.Component<TProps> {
-	render(){
-		const page = this.props.page;
-		const totalPage = this.props.totalPage;
-		const onChangePage = this.props.onChangePage;
-
+const  Pagination: FunctionComponent<TProps>  = ({page, totalPage, onChangePage}) =>  {
 		return (
 			<div>
 				<div className="btn-group">
@@ -35,7 +30,6 @@ class Pagination extends React.Component<TProps> {
 				</div>
 			</div>
 		)
-	}
 }
 
 export default Pagination;

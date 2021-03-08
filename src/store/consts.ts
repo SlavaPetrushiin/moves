@@ -9,6 +9,8 @@ export const UPDATE_PAGE = 'UPDATE_PAGE';
 export const UPDATE_TOTAL_PAGE = 'UPDATE_TOTAL_PAGE';
 
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
+export const ADDED_GENRES = 'ADDED_GENRES';
+export const DELETE_GENRES = 'DELETE_GENRES';
 export const UPDATE_MOVIES = 'UPDATE_MOVIES'
 
 export interface ISetUser {
@@ -60,4 +62,16 @@ export interface IUpdateMovies {
 	value: TMovie[]
 }
 
-export type allActionTypes = ISetUser | IDeleteUser | ISetSessionID | IDeleteSessionID | IIsShowModal | IUpdateIsAuth | IUpdateFilters | IUpdatePage | IUpdateTotalPage | IUpdateMovies
+export interface IAddedGenres {
+	type: typeof ADDED_GENRES
+	name: string
+	value: number
+}
+
+export interface IDeleteGenres {
+	type: typeof DELETE_GENRES
+	name: string
+	value: number
+}
+
+export type allActionTypes = ISetUser | IDeleteUser | ISetSessionID | IDeleteSessionID | IIsShowModal | IUpdateIsAuth | IUpdateFilters | IUpdatePage | IUpdateTotalPage | IUpdateMovies | IAddedGenres | IDeleteGenres

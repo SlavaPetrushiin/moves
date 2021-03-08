@@ -12,6 +12,8 @@ import {
 	SET_SESSION_ID,
 	DELETE_SESSION_ID,
 	UPDATE_IS_AUTH,
+	ADDED_GENRES,
+	DELETE_GENRES,
 	ISetUser,
 	IDeleteUser,
 	ISetSessionID,
@@ -23,7 +25,9 @@ import {
 	UPDATE_TOTAL_PAGE,
 	UPDATE_PAGE,
 	UPDATE_MOVIES,
-	IUpdateMovies
+	IUpdateMovies,
+	IAddedGenres,
+	IDeleteGenres
 } from "./consts";
 
 const THIRTY_DAYS_IN_SECONDS = 2_592_000;
@@ -119,6 +123,24 @@ export const moviesReducer = (state: InitialStateMovies = initialStateMovies, ac
 				}				
 			}
 		}
+		case ADDED_GENRES: {
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					with_genres: [...state.filters.with_genres, action.value]
+				}
+			}
+		}
+		case DELETE_GENRES: {
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					with_genres: state.filters.with_genres.filter((genre: number) => genre !== action.value)
+				}
+			}
+		}
 		case UPDATE_TOTAL_PAGE: {
 			return {
 				...state,
@@ -191,6 +213,8 @@ export const updateMovies = (value: any) : IUpdateMovies => ({type: UPDATE_MOVIE
 
 /* Action  userMovies */
 export const updateFilters = (name: string, value: string): IUpdateFilters => ({ type: UPDATE_FILTERS, name, value });
+export const addedGenres = (name: string, value: number): IAddedGenres=> ({ type: ADDED_GENRES, name, value });
+export const deleteGenres = (name: string, value: number): IDeleteGenres => ({ type: DELETE_GENRES, name, value });
 
 /* Thunk */
 export const logOutThunk = (): IThunk => async (dispatch: Dispatch, getState): Promise<any> => {
@@ -233,26 +257,22 @@ export const updateFiltersThunk = (name: keyof TFilters, value: string): IThunk 
 	dispatch(updateFilters(name, value));
 }
 
-export const updateGenresThunk = (id: number, name: keyof TFilters, checked: boolean): IThunk => (dispatch: Dispatch, getState) => {
-	let clone = getState().moviesReducer.filters.with_genres;
+export const updateGenresThunk = (id: number, name: keyof TFilters, checked: boolean): IThunk => (dispatch: Dispatch) => {
 	if (checked) {
-		clone.push(id);
-		dispatch(updateFilters(name, clone));
+		dispatch(addedGenres(name, id));
 	} else {
-		dispatch(updateFilters(name, clone.filter((genreID: number) => genreID !== id)));
+		dispatch(deleteGenres(name, id));
 	}
 }
 
-export const getMoviesThunk = (): IThunk => (dispatch: Dispatch): Promise<any> => {
-	return Promise.resolve();
+export const getMoviesThunk = (): IThunk => (dispatch: Dispatch): void => {
+
 }
 
-export const updateTotalPageThunk = (totalPage: number): IThunk => (dispatch: Dispatch): Promise<any> => {
-	dispatch(updateTotalPage(totalPage))
-	return Promise.resolve();
+export const updateTotalPageThunk = (totalPage: number): IThunk => (dispatch: Dispatch): void => {
+	dispatch(updateTotalPage(totalPage));
 }
 
-export const updatePageThunk = (page: number): IThunk => (dispatch: Dispatch): Promise<any> => {
-	dispatch(updatePage(page))
-	return Promise.resolve();
+export const updatePageThunk = (page: number): IThunk => (dispatch: Dispatch): void => {
+	dispatch(updatePage(page));
 }
