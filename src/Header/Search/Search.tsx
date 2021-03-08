@@ -1,23 +1,7 @@
-import React, { useState, useRef, FunctionComponent, useCallback } from 'react';
+import React, { useState, FunctionComponent } from 'react';
 import { InputGroup, Input } from 'reactstrap';
+import useDebounce from '../../hook/useDebounce';
 import { CallApi } from './../../api/api';
-
-function useDebounce(callback: (...args: any) => any, delay: number) {
-	const timer = useRef<any>();
-
-	const debouncedCallback = useCallback((...args) => {
-		if (timer.current) {
-			clearTimeout(timer.current);
-		}
-
-		timer.current = setTimeout(() => {
-			callback(...args);
-		}, delay)
-	}, [callback, delay]);
-	
-
-	return debouncedCallback;
-}
 
 const Search: FunctionComponent = () => {
 	const [value, setValue] = useState('');
