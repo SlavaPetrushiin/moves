@@ -3,9 +3,8 @@ import {
   DropdownToggle,
 	Dropdown,
 	DropdownMenu
-
 } from 'reactstrap';
-import { User } from '../store/redusers';
+import {IUser} from './../interfaces/interfaces';
 
 type IState = {
 	dropdownOpen: boolean
@@ -13,7 +12,7 @@ type IState = {
 
 interface IDropdownProps {
 	logOut: () => void
-	user: null |User
+	user: null | IUser
 }
 
 class HeaderDropdownMenu extends React.Component<IDropdownProps, IState> {

@@ -1,7 +1,7 @@
 import React from "react";
 import { CallApi } from "../api/api";
 import Genres from "./Genres";
-import { TFilters } from "../store/redusers";
+import { TFilters } from "./../interfaces/interfaces";
 
 type TProps = {
 	checkedGenres: (id: number, name: keyof TFilters, checked: boolean) => void

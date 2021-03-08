@@ -1,6 +1,5 @@
 import React from "react";
-import { TGenre } from "../App";
-import { TFilters } from "../store/redusers";
+import { TFilters, TGenre } from "../interfaces/interfaces";
 
 type TProps = {
 	genres: TGenre[]

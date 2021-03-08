@@ -5,7 +5,8 @@ import PrimaryReleaseYear from "./PrimaryReleaseYear";
 import Pagination from "./Pagination";
 import { connect } from "react-redux";
 import { RootState } from "../store/store";
-import { TFilters, updateFiltersThunk, updateGenresThunk, updatePageThunk } from "../store/redusers";
+import {TFilters} from "./../interfaces/interfaces";
+import { updateFiltersThunk, updateGenresThunk, updatePageThunk } from "../store/redusers";
 
 interface IMapStateToProps {
 	page: number | null

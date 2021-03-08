@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { TMovie } from "../HOC/MoviesHOC";
+import { TMovie } from "./../interfaces/interfaces";
 
 interface IProps {
 	item: TMovie

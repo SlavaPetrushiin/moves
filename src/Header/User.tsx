@@ -1,12 +1,11 @@
 import React from 'react';
-import AppContextHOC from '../HOC/AppContextHOC';
-import {User} from './../store/redusers';
+import { IUser } from './../interfaces/interfaces';
 
 type THeaderProps = {
-	user: null | User
+	user: null | IUser
 }
 
-class UserC extends React.Component<THeaderProps> {
+class User extends React.Component<THeaderProps> {
 	render(){
 		const {user} = this.props;
 		return (
@@ -17,5 +16,5 @@ class UserC extends React.Component<THeaderProps> {
 	}
 }
 
-export default AppContextHOC(UserC)
+export default User
 

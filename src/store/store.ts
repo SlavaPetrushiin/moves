@@ -1,6 +1,6 @@
 import {createStore, combineReducers, applyMiddleware} from "redux";
 import thunk, {ThunkMiddleware} from "redux-thunk";
-import { allActionTypes } from "./consts";
+import { allActionTypes } from "./../interfaces/interfaces";
 import { moviesReducer, 	userReducer} from "./redusers";
 
 const rootReducer = combineReducers({

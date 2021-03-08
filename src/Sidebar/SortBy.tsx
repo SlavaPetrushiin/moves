@@ -1,5 +1,5 @@
 import React from "react";
-import { TFilters } from "../App";
+import { TFilters } from "./../interfaces/interfaces";
 import UISelect from "./UISelect";
 
 type TProps = {

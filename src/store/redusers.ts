@@ -7,6 +7,20 @@ import {
 	IUpdatePage,
 	IUpdateTotalPage,
 	allActionTypes,
+	ISetUser,
+	IDeleteUser,
+	ISetSessionID,
+	IDeleteSessionID,
+	IUpdateIsAuth,
+	IUpdateFilters,
+	IUpdateMovies,
+	IAddedGenres,
+	IDeleteGenres,
+	IUser,
+	TMovie,
+	TFilters
+} from './../interfaces/interfaces'
+import {
 	SET_USER,
 	DELETE_USER,
 	SET_SESSION_ID,
@@ -14,51 +28,14 @@ import {
 	UPDATE_IS_AUTH,
 	ADDED_GENRES,
 	DELETE_GENRES,
-	ISetUser,
-	IDeleteUser,
-	ISetSessionID,
-	IDeleteSessionID,
 	IS_SHOW_LOGIN_MODAL,
-	IUpdateIsAuth,
 	UPDATE_FILTERS,
-	IUpdateFilters,
 	UPDATE_TOTAL_PAGE,
 	UPDATE_PAGE,
 	UPDATE_MOVIES,
-	IUpdateMovies,
-	IAddedGenres,
-	IDeleteGenres
 } from "./consts";
 
 const THIRTY_DAYS_IN_SECONDS = 2_592_000;
-
-export type TMovie = {
-	adult: boolean;
-	backdrop_path: string;
-	genre_ids: number[];
-	id: number;
-	original_language: string;
-	original_title: string;
-	overview: string;
-	popularity: number;
-	poster_path: string;
-	release_date: string;
-	title: string;
-	video: boolean;
-	vote_average: number;
-	vote_count: number;
-}
-
-type TGenre = {
-	id: number
-	name: string
-}
-
-export type TFilters = {
-	sort_by: string;
-	with_genres: any;
-	primary_release_year: string;
-}
 
 export type InitialStateMovies = {
 	filters: TFilters
@@ -68,23 +45,13 @@ export type InitialStateMovies = {
 }
 
 export type InitialStateUser = {
-	user: User | null
+	user: IUser | null
 	session_id: string
 	isAuth: boolean
 }
 
 export type InitialStateIsShowModal = {
 	IsShowModal: boolean
-}
-
-export type User = {
-	avatar: any
-	id: number
-	include_adult: boolean
-	iso_639_1: string
-	iso_3166_1: string
-	name: string
-	username: string
 }
 
 export type IThunk = ThunkAction<void, RootState, unknown, any>
@@ -202,8 +169,8 @@ export const showLoginModal = (state: InitialStateIsShowModal, action: allAction
 }
 
 /* Action  userReducer */
-export const setUser = (user: User): ISetUser => ({ type: SET_USER, user });
-export const updateIsAuth = (user: User, session_id: string): IUpdateIsAuth => ({ type: UPDATE_IS_AUTH, user, session_id });
+export const setUser = (user: IUser): ISetUser => ({ type: SET_USER, user });
+export const updateIsAuth = (user: IUser, session_id: string): IUpdateIsAuth => ({ type: UPDATE_IS_AUTH, user, session_id });
 export const deleteUser = (): IDeleteUser => ({ type: DELETE_USER });
 export const setSessionID = (session_id: string): ISetSessionID => ({ type: SET_SESSION_ID, session_id });
 export const deleteSessionID = (): IDeleteSessionID => ({ type: DELETE_SESSION_ID });

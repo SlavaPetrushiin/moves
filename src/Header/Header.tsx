@@ -3,10 +3,11 @@ import Login from './Login/Login';
 import HeaderDropdownMenu from './HeaderDropdownMenu';
 import { connect } from 'react-redux';
 import { RootState } from '../store/store';
-import {logOutThunk, User} from './../store/redusers';
+import {logOutThunk} from './../store/redusers';
+import {IUser} from './../interfaces/interfaces';
 
 interface IMapStateToProps {
-	user: User | null
+	user: IUser | null
 }
 
 interface IMapDispatchToProps {
