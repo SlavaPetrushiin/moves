@@ -28,7 +28,6 @@ import {
 	UPDATE_IS_AUTH,
 	ADDED_GENRES,
 	DELETE_GENRES,
-	IS_SHOW_LOGIN_MODAL,
 	UPDATE_FILTERS,
 	UPDATE_TOTAL_PAGE,
 	UPDATE_PAGE,
@@ -49,10 +48,10 @@ export type InitialStateUser = {
 	session_id: string
 	isAuth: boolean
 }
-
+/*
 export type InitialStateIsShowModal = {
 	IsShowModal: boolean
-}
+}*/
 
 export type IThunk = ThunkAction<void, RootState, unknown, any>
 
@@ -74,10 +73,10 @@ const initialStateUser: InitialStateUser = {
 	session_id: cookies.get('session_id'),
 	isAuth: false
 }
-
+/*
 const initialStateIsShowModal: InitialStateIsShowModal = {
 	IsShowModal: false
-}
+}*/
 
 export const moviesReducer = (state: InitialStateMovies = initialStateMovies, action: allActionTypes): InitialStateMovies => {
 	switch (action.type) {
@@ -154,7 +153,7 @@ export const userReducer = (state: InitialStateUser = initialStateUser, action: 
 			return state;
 	}
 }
-
+/*
 export const showLoginModal = (state: InitialStateIsShowModal, action: allActionTypes): InitialStateIsShowModal => {
 	switch (action.type) {
 		case IS_SHOW_LOGIN_MODAL: {
@@ -166,7 +165,7 @@ export const showLoginModal = (state: InitialStateIsShowModal, action: allAction
 		default:
 			return state;
 	}
-}
+}*/
 
 /* Action  userReducer */
 export const setUser = (user: IUser): ISetUser => ({ type: SET_USER, user });
@@ -242,4 +241,22 @@ export const updateTotalPageThunk = (totalPage: number): IThunk => (dispatch: Di
 
 export const updatePageThunk = (page: number): IThunk => (dispatch: Dispatch): void => {
 	dispatch(updatePage(page));
+}
+
+interface IResSearch {
+	results: TMovie[]
+	page: number
+}
+
+export const searchMoviesThunk = (value: string): IThunk => async (dispatch: Dispatch): Promise<void> => {
+	try{
+		const res = await CallApi.get<IResSearch>('search/movie', {
+			query: value
+		});
+		dispatch(updateMovies(res.results));
+		dispatch(updatePage(res.page));
+	}
+	catch(error){
+		console.error(error.message);
+	}
 }

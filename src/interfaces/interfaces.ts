@@ -126,4 +126,6 @@ export interface IDeleteGenres {
 	value: number
 }
 
+
+
 export type allActionTypes = ISetUser | IDeleteUser | ISetSessionID | IDeleteSessionID | IIsShowModal | IUpdateIsAuth | IUpdateFilters | IUpdatePage | IUpdateTotalPage | IUpdateMovies | IAddedGenres | IDeleteGenres

@@ -5,7 +5,7 @@ export const API_KEY_3 = "f4d0b4204922e7fe34a9976c7aa25f90";
 export const API_KEY_4 =
 	"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNGQwYjQyMDQ5MjJlN2ZlMzRhOTk3NmM3YWEyNWY5MCIsInN1YiI6IjVmZjA5ODNhNzA2YjlmMDA0MDk4MWUzYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.3gxhiX2y0GALjg1f9QFXw0CMbu6Im5vuLDNeFktcx28";
 	
-export const apiAuthentication = (url: string = "", option = {}) => {
+export const apiAuthentication = <T>(url: string = "", option = {}): Promise<T> => {
 	return new Promise((resolve, reject) => {
 			fetch(url, option)
 				.then(response => {
@@ -25,12 +25,12 @@ export const apiAuthentication = (url: string = "", option = {}) => {
 }
 
 export class CallApi {
-	static get(url: string, params = {}){
+	static get<T>(url: string, params = {}){
 		let option = {
 			api_key: API_KEY_3,
 			...params
 		}
-		return apiAuthentication(`${API_URL}/${url}?${Object.entries(option).map(([k,v])=>`${k}=${v}`).join('&')}&language=ru-RU&`,{
+		return apiAuthentication<T>(`${API_URL}/${url}?${Object.entries(option).map(([k,v])=>`${k}=${v}`).join('&')}&language=ru-RU&`,{
 			mode: "cors",
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8'

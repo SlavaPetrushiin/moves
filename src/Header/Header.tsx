@@ -15,7 +15,6 @@ interface IMapDispatchToProps {
 	logOutThunk: () => void
 }
 
-
 class Header extends React.Component<any & IMapStateToProps & IMapDispatchToProps> {
 	render(){
 		return (
