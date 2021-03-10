@@ -18,7 +18,8 @@ import {
 	IDeleteGenres,
 	IUser,
 	TMovie,
-	TFilters
+	TFilters,
+	IPayloadMovies
 } from './../interfaces/interfaces'
 import {
 	SET_USER,
@@ -122,7 +123,9 @@ export const moviesReducer = (state: InitialStateMovies = initialStateMovies, ac
 		case UPDATE_MOVIES: {
 			return {
 				...state,
-				movies: action.value
+				movies: action.payload.movies,
+				page: action.payload.page,
+				totalPage: action.payload.totalPage
 			}
 		}
 		default:
@@ -175,7 +178,7 @@ export const setSessionID = (session_id: string): ISetSessionID => ({ type: SET_
 export const deleteSessionID = (): IDeleteSessionID => ({ type: DELETE_SESSION_ID });
 export const updatePage = (value: number) : IUpdatePage => ({type: UPDATE_PAGE, value});
 export const updateTotalPage = (value: number) : IUpdateTotalPage => ({type: UPDATE_TOTAL_PAGE, value});
-export const updateMovies = (value: any) : IUpdateMovies => ({type: UPDATE_MOVIES, value});
+export const updateMovies = (payload: IPayloadMovies) : IUpdateMovies => ({type: UPDATE_MOVIES, payload});
 
 /* Action  userMovies */
 export const updateFilters = (name: string, value: string): IUpdateFilters => ({ type: UPDATE_FILTERS, name, value });
@@ -246,6 +249,7 @@ export const updatePageThunk = (page: number): IThunk => (dispatch: Dispatch): v
 interface IResSearch {
 	results: TMovie[]
 	page: number
+	total_pages: number
 }
 
 export const searchMoviesThunk = (value: string): IThunk => async (dispatch: Dispatch): Promise<void> => {
@@ -253,8 +257,12 @@ export const searchMoviesThunk = (value: string): IThunk => async (dispatch: Dis
 		const res = await CallApi.get<IResSearch>('search/movie', {
 			query: value
 		});
-		dispatch(updateMovies(res.results));
-		dispatch(updatePage(res.page));
+		const payload = {
+			page: res.page,
+			totalPage: res.total_pages,
+			movies: res.results
+		}
+		dispatch(updateMovies(payload));
 	}
 	catch(error){
 		console.error(error.message);

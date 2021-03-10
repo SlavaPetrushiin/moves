@@ -5,7 +5,7 @@ import { RootState } from "../store/store";
 import { bindActionCreators } from 'redux'
 import {updateMovies, updateTotalPageThunk} from "./../store/redusers";
 import { Dispatch } from "redux";
-import { TFilters, TMovie } from "../interfaces/interfaces";
+import { IPayloadMovies, TFilters, TMovie } from "../interfaces/interfaces";
 
 interface IMapState {
 	movies: TMovie[]
@@ -14,7 +14,7 @@ interface IMapState {
 }
 
 interface IDispatchState {
-	getMovies: (movies: TMovie[]) => void
+	getMovies: (payload: IPayloadMovies) => void
 	updateTotalPageThunk: (pages: number) => void
 }
 
@@ -48,8 +48,12 @@ export default (Component: any) => connector(class MoviesHOC extends React.Compo
 		fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}&with_genres=${with_genres.join(",")}`)
 			.then(res => res.json())
 			.then(data => {
-				this.props.getMovies(data.results);
-				this.props.updateTotalPageThunk(data.total_pages);
+				const payload: IPayloadMovies = {
+					page: data.page,
+					totalPage: data.total_pages,
+					movies: data.results
+				}
+				this.props.getMovies(payload);
 			});
 	}
 

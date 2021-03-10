@@ -1,29 +1,16 @@
 import React, { useState, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { InputGroup, Input } from 'reactstrap';
-import { CallApi } from '../../api/api';
 import useDebounce from '../../hook/useDebounce';
-import { TMovie } from '../../interfaces/interfaces';
-import { searchMoviesThunk, updateMovies, updatePage } from './../../store/redusers';
-
-interface IResSearch {
-	results: TMovie[]
-	page: number
-}
+import { searchMoviesThunk } from './../../store/redusers';
 
 const Search: FunctionComponent = () => {
 	const [value, setValue] = useState('');
 	const debouncedSearch = useDebounce(search, 500);
 	const dispatch = useDispatch();
 
-	async function search(value: string) {
-		const res = await CallApi.get<IResSearch>('search/movie', {
-			query: value
-		});
-
-		dispatch(updateMovies(res.results));
-		dispatch(updatePage(res.page));
-
+	function search(value: string): void {
+		dispatch(searchMoviesThunk(value));
 	}
 
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -32,9 +19,9 @@ const Search: FunctionComponent = () => {
 	};
 
 	return (
-		<InputGroup>
+		<InputGroup className="mb-3">
 			<Input
-				placeholder='Search'
+				placeholder='Найти фильм...'
 				value={value}
 				onChange={onChange}
 			/>

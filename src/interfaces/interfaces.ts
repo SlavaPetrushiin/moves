@@ -109,9 +109,15 @@ export interface IUpdateTotalPage {
 	value: number
 }
 
+export interface IPayloadMovies {
+	movies: TMovie[]
+	page: number
+	totalPage: number
+}
+
 export interface IUpdateMovies {
 	type: typeof UPDATE_MOVIES
-	value: TMovie[]
+	payload: IPayloadMovies
 }
 
 export interface IAddedGenres {
