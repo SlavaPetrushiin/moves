@@ -32,7 +32,7 @@ class MoviesList extends React.Component<TProps> {
 				{movies.map((movie: TMovie) => {
 					return (
 						<div className="col-6 mb-4" key={movie.id}>
-							<MovieItem item={movie}/>
+							<MovieItem {...movie}/>
 						</div>
 					)
 				})}
