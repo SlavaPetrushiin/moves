@@ -1,8 +1,8 @@
 import React, { useState, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { InputGroup, Input } from 'reactstrap';
-import useDebounce from '../../hook/useDebounce';
-import { searchMoviesThunk } from './../../store/redusers';
+import useDebounce from './../hook/useDebounce';
+import { searchMoviesThunk } from '../store/redusers';
 
 const Search: FunctionComponent = () => {
 	const [value, setValue] = useState('');

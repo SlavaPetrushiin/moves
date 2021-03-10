@@ -6,7 +6,7 @@ import MoviesPage from './Pages/MoviesPage/MoviesPage';
 import MoviePage from './Pages/MoviePage/MoviePage';
 import { useSelector } from 'react-redux';
 import store, { RootState } from './store/store';
-import Search from './Header/Search/Search';
+import Search from './Search/Search';
 
 function App() {
 	const { session_id } = useSelector((state: RootState) => state.userReducer);
