@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, NavLink} from 'react-router-dom';
+import { Route, Switch, NavLink, Redirect} from 'react-router-dom';
 import { TabContent, Nav, NavItem } from 'reactstrap';
 import MovieCredits from './MovieCredits';
 import MovieDetail from './MovieDetail';
@@ -60,6 +60,7 @@ class MovieTabs extends React.Component<IProps>{
 						<Route path={`/movie/${this.props.id}/detail`} component={MovieDetail}/>
 						<Route path={`/movie/${this.props.id}/credits`} component={MovieCredits}/>
 						<Route path={`/movie/${this.props.id}/similar`} component={MovieVideos}/>
+						<Redirect to={`/movie/${this.props.id}/detail`}/>
 					</Switch>
 				</TabContent>
     	</div>
